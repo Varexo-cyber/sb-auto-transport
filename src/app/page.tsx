@@ -7,6 +7,7 @@ import {
   Phone,
   Clock,
   MapPin,
+  Mail,
   Truck,
   Wrench,
   DollarSign,
@@ -73,13 +74,13 @@ export default function Home() {
               transition={{ delay: 0.2 }}
               className="flex items-center gap-3"
             >
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center">
-                <Truck className="w-7 h-7 text-gray-900" />
-              </div>
-              <div>
-                <h1 className="text-xl font-bold text-gray-900">SB Auto</h1>
-                <p className="text-xs text-gray-600">Transport & Services</p>
-              </div>
+              <Image
+                src="/logo.png"
+                alt="DirectAutoHulp"
+                width={800}
+                height={240}
+                className="h-16 sm:h-20 md:h-32 w-auto"
+              />
             </motion.div>
 
             {/* Desktop Menu */}
@@ -129,15 +130,15 @@ export default function Home() {
         <motion.div
           initial={false}
           animate={{ height: isMenuOpen ? "auto" : 0, opacity: isMenuOpen ? 1 : 0 }}
-          className="md:hidden overflow-hidden bg-black/90 backdrop-blur-xl"
+          className="md:hidden overflow-hidden bg-white/95 backdrop-blur-xl border-t border-gray-100"
         >
           <div className="px-4 py-6 space-y-4">
             <Link href="/" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-900 font-semibold py-2">Home</Link>
-            <Link href="/#diensten" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-700 hover:text-gray-900 py-2">Diensten</Link>
-            <Link href="/transport" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-700 hover:text-gray-900 py-2">Auto Transport</Link>
-            <Link href="/pechhulp" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-700 hover:text-gray-900 py-2">Pechhulp</Link>
-            <Link href="/inkoop" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-700 hover:text-gray-900 py-2">Auto Inkoop</Link>
-            <Link href="/#contact" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-700 hover:text-gray-900 py-2">Contact</Link>
+            <Link href="/#diensten" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Diensten</Link>
+            <Link href="/transport" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Auto Transport</Link>
+            <Link href="/pechhulp" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Pechhulp</Link>
+            <Link href="/inkoop" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Auto Inkoop</Link>
+            <Link href="/#contact" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Contact</Link>
           </div>
         </motion.div>
       </motion.nav>
@@ -147,13 +148,13 @@ export default function Home() {
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
-            src="https://images.unsplash.com/photo-1617531653332-bd46c24f2068?w=1920&q=80"
-            alt="Luxury Mercedes car"
+            src="https://images.unsplash.com/photo-1592198084033-aade902d1aae?w=1920&q=80"
+            alt="Ferrari Purosangue"
             fill
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/75 via-black/65 to-black/85" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/75 to-black/90" />
         </div>
         
         <div className="absolute inset-0 hero-gradient" />
@@ -190,12 +191,12 @@ export default function Home() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-5xl sm:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
-              style={{ textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}
+              className="text-5xl sm:text-7xl lg:text-8xl font-extrabold mb-6 leading-tight tracking-tight"
+              style={{ textShadow: '0 4px 20px rgba(0,0,0,0.6)' }}
             >
               <span className="text-white">Je Auto in</span>
               <br />
-              <span className="gradient-text">Veilige Handen</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-orange-300 to-amber-400">Veilige Handen</span>
             </motion.h1>
 
             <motion.p
@@ -244,10 +245,10 @@ export default function Home() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1 + i * 0.1 }}
-                  className="glass-card rounded-2xl p-6 text-center"
+                  className="rounded-2xl p-6 text-center bg-white/10 backdrop-blur-md border border-white/15"
                 >
-                  <div className="text-3xl sm:text-4xl font-bold gradient-text mb-2">{stat.value}</div>
-                  <div className="text-sm text-gray-600">{stat.label}</div>
+                  <div className="text-3xl sm:text-4xl font-bold text-white mb-2">{stat.value}</div>
+                  <div className="text-sm text-white/70">{stat.label}</div>
                 </motion.div>
               ))}
             </motion.div>
@@ -566,7 +567,7 @@ export default function Home() {
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Naam</label>
                   <input
                     type="text"
-                    placeholder="Jouw naam (Voorbeeld)"
+                    placeholder="Jouw naam"
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all"
                   />
                 </div>
@@ -574,7 +575,7 @@ export default function Home() {
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Telefoonnummer</label>
                   <input
                     type="tel"
-                    placeholder="06-12345678 (Voorbeeld)"
+                    placeholder="+31 6 12345948"
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all"
                   />
                 </div>
@@ -585,7 +586,7 @@ export default function Home() {
                   <label className="block text-sm font-semibold text-gray-700 mb-2">E-mail</label>
                   <input
                     type="email"
-                    placeholder="email@voorbeeld.nl (Voorbeeld)"
+                    placeholder="email@voorbeeld.nl"
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all"
                   />
                 </div>
@@ -593,7 +594,7 @@ export default function Home() {
                   <label className="block text-sm font-semibold text-gray-700 mb-2">Locatie / Adres</label>
                   <input
                     type="text"
-                    placeholder="Jouw locatie (Voorbeeld)"
+                    placeholder="Jouw locatie"
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all"
                   />
                 </div>
@@ -614,7 +615,7 @@ export default function Home() {
                 <label className="block text-sm font-semibold text-gray-700 mb-2">Bericht</label>
                 <textarea
                   rows={4}
-                  placeholder="Vertel ons wat je nodig hebt (Voorbeeld)"
+                  placeholder="Vertel ons wat je nodig hebt"
                   className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all resize-none"
                 />
               </div>
@@ -628,7 +629,7 @@ export default function Home() {
                   Verstuur Bericht
                 </button>
                 <a
-                  href="tel:+31612345678"
+                  href="tel:+31612345948"
                   className="flex-1 py-4 bg-gray-100 rounded-full text-gray-900 font-semibold text-lg hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-3"
                 >
                   <Phone className="w-5 h-5" />
@@ -638,24 +639,31 @@ export default function Home() {
             </form>
 
             <div className="mt-10 pt-8 border-t border-gray-200">
-              <div className="grid sm:grid-cols-3 gap-6 text-center">
+              <div className="grid sm:grid-cols-4 gap-6 text-center">
                 <div className="flex flex-col items-center gap-2">
                   <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
                     <Phone className="w-5 h-5 text-red-500" />
                   </div>
                   <p className="font-semibold text-gray-900">Telefoon</p>
-                  <p className="text-sm text-gray-600">06-12345678 (Voorbeeld)</p>
+                  <a href="tel:+31612345948" className="text-sm text-gray-600 hover:text-red-500 transition-colors">+31 6 12345948</a>
                 </div>
                 <div className="flex flex-col items-center gap-2">
                   <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
                     <MapPin className="w-5 h-5 text-blue-500" />
                   </div>
                   <p className="font-semibold text-gray-900">Adres</p>
-                  <p className="text-sm text-gray-600">Straatnaam 123 (Voorbeeld)</p>
+                  <a href="https://maps.google.com/?q=Leyweg+809+2545+GS+Den+Haag" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 hover:text-blue-500 transition-colors">Leyweg 809, 2545 GS Den Haag</a>
                 </div>
                 <div className="flex flex-col items-center gap-2">
                   <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                    <Clock className="w-5 h-5 text-green-500" />
+                    <Mail className="w-5 h-5 text-green-500" />
+                  </div>
+                  <p className="font-semibold text-gray-900">Email</p>
+                  <a href="mailto:info@directautohulp.nl" className="text-sm text-gray-600 hover:text-green-500 transition-colors">info@directautohulp.nl</a>
+                </div>
+                <div className="flex flex-col items-center gap-2">
+                  <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center">
+                    <Clock className="w-5 h-5 text-orange-500" />
                   </div>
                   <p className="font-semibold text-gray-900">Bereikbaar</p>
                   <p className="text-sm text-gray-600">24/7 - Altijd bereikbaar</p>
@@ -672,28 +680,18 @@ export default function Home() {
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div className="md:col-span-2">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center">
-                  <Truck className="w-7 h-7 text-gray-900" />
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold text-gray-900">SB Auto</h3>
-                  <p className="text-xs text-gray-600">Transport & Services</p>
-                </div>
+                <Image
+                  src="/logo.png"
+                  alt="DirectAutoHulp"
+                  width={800}
+                  height={240}
+                  className="h-44 w-auto mb-6"
+                />
               </div>
               <p className="text-gray-600 mb-6 max-w-md">
                 Europa's meest betrouwbare partner voor al je auto-gerelateerde zaken. 
                 24/7 beschikbaar, professioneel en transparant.
               </p>
-              <div className="flex gap-4">
-                {["Facebook", "Instagram", "LinkedIn"].map((social) => (
-                  <button
-                    key={social}
-                    className="w-10 h-10 rounded-full glass flex items-center justify-center text-gray-600 hover:text-gray-900 hover:bg-white/10 transition-all"
-                  >
-                    <span className="text-xs">{social[0]}</span>
-                  </button>
-                ))}
-              </div>
             </div>
 
             <div>
@@ -722,15 +720,19 @@ export default function Home() {
               <ul className="space-y-3 text-gray-600">
                 <li className="flex items-center gap-2">
                   <Phone className="w-4 h-4 text-red-400" />
-                  <span>06-12345678 (Voorbeeld)</span>
+                  <a href="tel:+31612345948" className="hover:text-red-500 transition-colors">+31 6 12345948</a>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Mail className="w-4 h-4 text-green-400" />
+                  <a href="mailto:info@directautohulp.nl" className="hover:text-green-500 transition-colors">info@directautohulp.nl</a>
                 </li>
                 <li className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-red-400" />
-                  <span>Adres (Voorbeeld)</span>
+                  <a href="https://maps.google.com/?q=Leyweg+809+2545+GS+Den+Haag" target="_blank" rel="noopener noreferrer" className="hover:text-red-500 transition-colors">Leyweg 809, 2545 GS Den Haag</a>
                 </li>
                 <li className="flex items-center gap-2">
                   <BadgeCheck className="w-4 h-4 text-green-400" />
-                  <span>KVK: 12345678 (Voorbeeld)</span>
+                  <span>KVK: 98448803</span>
                 </li>
               </ul>
             </div>
@@ -738,14 +740,35 @@ export default function Home() {
 
           <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-gray-500 text-sm">
-              © 2026 SB Auto Transport. Alle rechten voorbehouden.
+              © 2026 DirectAutoHulp. Alle rechten voorbehouden.
             </p>
             <p className="text-gray-500 text-sm">
-              BTW: NL123456789B01 (Voorbeeld) | KVK: 12345678 (Voorbeeld)
+              <span>Medemogelijk gemaakt door </span>
+              <a href="https://varexo.nl" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:text-green-300 transition-colors">
+                Varexo
+              </a>
+            </p>
+            <p className="text-gray-500 text-sm">
+              BTW: NL005332380B82 | KVK: 98448803
             </p>
           </div>
         </div>
       </footer>
+
+      {/* WhatsApp Widget */}
+      <a
+        href="https://wa.me/31612345948?text=Ik%20heb%20een%20vraagje%20over%20directautohulp"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 right-6 z-50 group"
+      >
+        <div className="flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white rounded-full px-4 py-3 shadow-lg hover:shadow-xl transition-all duration-300">
+          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+          </svg>
+          <span className="font-semibold text-sm">WhatsApp</span>
+        </div>
+      </a>
     </div>
   );
 }
