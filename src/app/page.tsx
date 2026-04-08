@@ -28,6 +28,14 @@ import {
 } from "lucide-react";
 import { useState, useRef } from "react";
 
+// Smooth scroll helper zonder hash in URL
+function scrollToSection(sectionId: string) {
+  const element = document.getElementById(sectionId);
+  if (element) {
+    element.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
 const fadeInUp = {
   initial: { opacity: 0, y: 60 },
   animate: { opacity: 1, y: 0 },
@@ -85,10 +93,13 @@ export default function Home() {
 
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center gap-8">
-              <Link href="/#diensten" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
+              <button 
+                onClick={() => scrollToSection('diensten')}
+                className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group cursor-pointer"
+              >
                 Diensten
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300" />
-              </Link>
+              </button>
               <Link href="/inkoop" className="text-sm text-green-600 font-semibold hover:text-green-700 transition-colors duration-300 relative group">
                 Auto Inkoop
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-500 group-hover:w-full transition-all duration-300" />
@@ -101,10 +112,13 @@ export default function Home() {
                 Pechhulp
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300" />
               </Link>
-              <Link href="/#contact" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
+              <button 
+                onClick={() => scrollToSection('contact')}
+                className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group cursor-pointer"
+              >
                 Contact
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300" />
-              </Link>
+              </button>
               <motion.button
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -134,11 +148,17 @@ export default function Home() {
         >
           <div className="px-4 py-6 space-y-4">
             <Link href="/" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-900 font-semibold py-2">Home</Link>
-            <Link href="/#diensten" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Diensten</Link>
+            <button 
+              onClick={() => { scrollToSection('diensten'); setIsMenuOpen(false); }}
+              className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors text-left w-full"
+            >Diensten</button>
             <Link href="/inkoop" onClick={() => setIsMenuOpen(false)} className="block text-lg text-green-600 font-semibold hover:text-green-700 py-2 transition-colors">Auto Inkoop</Link>
             <Link href="/transport" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Auto Transport</Link>
             <Link href="/pechhulp" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Pechhulp</Link>
-            <Link href="/#contact" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Contact</Link>
+            <button 
+              onClick={() => { scrollToSection('contact'); setIsMenuOpen(false); }}
+              className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors text-left w-full"
+            >Contact</button>
           </div>
         </motion.div>
       </motion.nav>
@@ -216,21 +236,21 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="flex flex-col sm:flex-row gap-4 justify-center items-center"
             >
-              <a
-                href="#contact"
-                className="group px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 rounded-full text-white font-bold text-lg hover:shadow-2xl hover:shadow-red-500/40 transition-all duration-300 flex items-center gap-3"
+              <button
+                onClick={() => scrollToSection('contact')}
+                className="group px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 rounded-full text-white font-bold text-lg hover:shadow-2xl hover:shadow-red-500/40 transition-all duration-300 flex items-center gap-3 cursor-pointer"
               >
                 <Phone className="w-5 h-5" />
                 Direct Contact
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </a>
-              <a
-                href="#diensten"
-                className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white font-semibold text-lg hover:bg-white/20 transition-all duration-300 flex items-center gap-3"
+              </button>
+              <button
+                onClick={() => scrollToSection('diensten')}
+                className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white font-semibold text-lg hover:bg-white/20 transition-all duration-300 flex items-center gap-3 cursor-pointer"
               >
                 <MapPin className="w-5 h-5" />
                 Bekijk Diensten
-              </a>
+              </button>
             </motion.div>
 
             {/* Stats */}
