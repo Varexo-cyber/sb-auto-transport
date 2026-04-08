@@ -89,16 +89,16 @@ export default function Home() {
                 Diensten
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300" />
               </Link>
+              <Link href="/inkoop" className="text-sm text-green-600 font-semibold hover:text-green-700 transition-colors duration-300 relative group">
+                Auto Inkoop
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-500 group-hover:w-full transition-all duration-300" />
+              </Link>
               <Link href="/transport" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
                 Auto Transport
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300" />
               </Link>
               <Link href="/pechhulp" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
                 Pechhulp
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300" />
-              </Link>
-              <Link href="/inkoop" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
-                Auto Inkoop
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300" />
               </Link>
               <Link href="/#contact" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
@@ -135,9 +135,9 @@ export default function Home() {
           <div className="px-4 py-6 space-y-4">
             <Link href="/" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-900 font-semibold py-2">Home</Link>
             <Link href="/#diensten" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Diensten</Link>
+            <Link href="/inkoop" onClick={() => setIsMenuOpen(false)} className="block text-lg text-green-600 font-semibold hover:text-green-700 py-2 transition-colors">Auto Inkoop</Link>
             <Link href="/transport" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Auto Transport</Link>
             <Link href="/pechhulp" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Pechhulp</Link>
-            <Link href="/inkoop" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Auto Inkoop</Link>
             <Link href="/#contact" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Contact</Link>
           </div>
         </motion.div>
@@ -206,8 +206,8 @@ export default function Home() {
               className="text-xl sm:text-2xl text-white max-w-3xl mx-auto mb-10"
               style={{ textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}
             >
-              Professioneel transport, directe pechhulp & hoogste inkoopprijzen. 
-              Europa's meest betrouwbare autopartner.
+              Professioneel transport, directe pechhulp & eerlijke inkoopprijzen. 
+              Uw betrouwbare autopartner door heel Europa.
             </motion.p>
 
             <motion.div
@@ -216,15 +216,21 @@ export default function Home() {
               transition={{ duration: 0.8, delay: 0.6 }}
               className="flex flex-col sm:flex-row gap-4 justify-center items-center"
             >
-              <button className="group px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 rounded-full text-white font-bold text-lg hover:shadow-2xl hover:shadow-red-500/40 transition-all duration-300 flex items-center gap-3">
+              <a
+                href="#contact"
+                className="group px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 rounded-full text-white font-bold text-lg hover:shadow-2xl hover:shadow-red-500/40 transition-all duration-300 flex items-center gap-3"
+              >
                 <Phone className="w-5 h-5" />
                 Direct Contact
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white font-semibold text-lg hover:bg-white/20 transition-all duration-300 flex items-center gap-3">
+              </a>
+              <a
+                href="#diensten"
+                className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white font-semibold text-lg hover:bg-white/20 transition-all duration-300 flex items-center gap-3"
+              >
                 <MapPin className="w-5 h-5" />
                 Bekijk Diensten
-              </button>
+              </a>
             </motion.div>
 
             {/* Stats */}
@@ -235,10 +241,10 @@ export default function Home() {
               className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
             >
               {[
-                { value: "15K+", label: "Auto's Getransporteerd" },
-                { value: "24/7", label: "Pechhulp Beschikbaar" },
-                { value: "25+", label: "Jaar Ervaring" },
-                { value: "99%", label: "Tevreden Klanten" },
+                { value: "24/7", label: "Bereikbaar" },
+                { value: "EU", label: "Door Heel Europa" },
+                { value: "All-Risk", label: "Verzekerd Transport" },
+                { value: "NIWO", label: "Gecertificeerd" },
               ].map((stat, i) => (
                 <motion.div
                   key={stat.label}
@@ -293,9 +299,9 @@ export default function Home() {
             </motion.p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {/* Service 1: Transport */}
-            <Link href="/transport">
+          <div className="grid md:grid-cols-3 gap-8 items-stretch">
+            {/* Service 1: Transport (Links) */}
+            <Link href="/transport" className="h-full">
               <motion.div
                 initial={{ opacity: 0, y: 60 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -329,13 +335,48 @@ export default function Home() {
               </motion.div>
             </Link>
 
-            {/* Service 2: Pechhulp */}
-            <Link href="/pechhulp">
+            {/* Service 2: Inkoop (MIDDEN) - Extra uitstraling! */}
+            <Link href="/inkoop" className="h-full md:-mt-4 md:mb-4">
+              <motion.div
+                initial={{ opacity: 0, y: 60, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                whileHover={{ y: -15, scale: 1.03 }}
+                className="glass-card rounded-3xl p-8 group cursor-pointer relative overflow-hidden h-full border-2 border-green-500/30 shadow-2xl shadow-green-500/20"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-green-600/30 to-emerald-600/20 opacity-100 transition-opacity duration-500" />
+                <div className="relative z-10">
+                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-xl shadow-green-500/40">
+                    <DollarSign className="w-10 h-10 text-gray-900" />
+                  </div>
+                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Auto Inkoop</h3>
+                  <p className="text-gray-600 mb-6 leading-relaxed text-center">
+                    <strong className="text-green-600 text-lg block mb-2">Jouw auto direct verkocht voor de beste prijs!</strong>
+                    <span className="block">Direct geld op je rekening, wij regelen al het papierwerk. Snel, veilig en zonder gedoe.</span>
+                  </p>
+                  <ul className="space-y-3 mb-8">
+                    {["Beste prijs gegarandeerd", "Direct uitbetaald", "Gratis ophalen", "Alle auto's welkom", "Geen gedoe"].map((item) => (
+                      <li key={item} className="flex items-center gap-3 text-gray-700">
+                        <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
+                        <span>{item}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="flex items-center gap-2 text-green-500 font-bold group-hover:gap-4 transition-all text-lg">
+                    Direct Verkopen <ChevronRight className="w-5 h-5" />
+                  </div>
+                </div>
+              </motion.div>
+            </Link>
+
+            {/* Service 3: Pechhulp (Rechts) */}
+            <Link href="/pechhulp" className="h-full">
               <motion.div
                 initial={{ opacity: 0, y: 60 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
                 whileHover={{ y: -10, scale: 1.02 }}
                 className="glass-card rounded-3xl p-8 group cursor-pointer relative overflow-hidden h-full"
               >
@@ -363,41 +404,6 @@ export default function Home() {
                 </div>
               </motion.div>
             </Link>
-
-            {/* Service 3: Inkoop */}
-            <Link href="/inkoop">
-              <motion.div
-                initial={{ opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                whileHover={{ y: -10, scale: 1.02 }}
-                className="glass-card rounded-3xl p-8 group cursor-pointer relative overflow-hidden h-full"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-green-600/20 to-emerald-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative z-10">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-green-500/30">
-                    <DollarSign className="w-8 h-8 text-gray-900" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Auto Inkoop</h3>
-                  <p className="text-gray-600 mb-6 leading-relaxed">
-                    Jouw auto direct verkocht tegen de beste prijs. Direct geld op je rekening, 
-                    wij regelen alle papierwerk.
-                  </p>
-                  <ul className="space-y-3 mb-8">
-                    {["Beste prijs garantie", "Direct uitbetaald", "Gratis ophalen", "Alle auto's welkom"].map((item) => (
-                      <li key={item} className="flex items-center gap-3 text-gray-700">
-                        <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="flex items-center gap-2 text-green-400 font-semibold group-hover:gap-4 transition-all">
-                    Bekijk Dienst <ChevronRight className="w-5 h-5" />
-                  </div>
-                </div>
-              </motion.div>
-            </Link>
           </div>
         </div>
       </section>
@@ -418,11 +424,10 @@ export default function Home() {
                 WAAROM WIJ?
               </span>
               <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-                Europa's Meest <span className="gradient-text">Betrouwbare</span> Autopartner
+                Uw <span className="gradient-text">Betrouwbare</span> Autopartner
               </h2>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Met meer dan 25 jaar ervaring en duizenden tevreden klanten zijn wij dé keuze 
-                voor al je auto-gerelateerde zaken.
+                Wij zijn dé keuze voor al je auto-gerelateerde zaken. Professioneel, snel en altijd verzekerd.
               </p>
 
               <div className="space-y-4">
@@ -430,7 +435,7 @@ export default function Home() {
                   { icon: Shield, title: "100% Verzekerd", desc: "Alle transporten volledig verzekerd" },
                   { icon: Clock, title: "Snelle Service", desc: "Gemiddelde responstijd van 30 minuten" },
                   { icon: BadgeCheck, title: "Erkend Bedrijf", desc: "KVK geregistreerd & BRDO erkend" },
-                  { icon: Star, title: "5-Sterren Service", desc: "Gemiddelde beoordeling van 4.9/5" },
+                  { icon: Star, title: "NIWO Vergunning", desc: "Officieel gecertificeerd voor autotransport" },
                 ].map((feature, i) => (
                   <motion.div
                     key={feature.title}
@@ -466,25 +471,25 @@ export default function Home() {
                     <div className="space-y-4">
                       <div className="glass rounded-2xl p-6 text-center">
                         <Car className="w-10 h-10 text-red-400 mx-auto mb-3" />
-                        <div className="text-3xl font-bold text-gray-900">15.000+</div>
-                        <div className="text-sm text-gray-600">Auto's verhuisd</div>
+                        <div className="text-3xl font-bold text-gray-900">EU-breed</div>
+                        <div className="text-sm text-gray-600">Transport</div>
                       </div>
                       <div className="glass rounded-2xl p-6 text-center">
                         <Navigation className="w-10 h-10 text-blue-400 mx-auto mb-3" />
-                        <div className="text-3xl font-bold text-gray-900">30+</div>
-                        <div className="text-sm text-gray-600">Landen</div>
+                        <div className="text-3xl font-bold text-gray-900">24/7</div>
+                        <div className="text-sm text-gray-600">Bereikbaar</div>
                       </div>
                     </div>
                     <div className="space-y-4 pt-8">
                       <div className="glass rounded-2xl p-6 text-center">
                         <Euro className="w-10 h-10 text-green-400 mx-auto mb-3" />
-                        <div className="text-3xl font-bold text-gray-900">€50M+</div>
-                        <div className="text-sm text-gray-600">Auto's ingekocht</div>
+                        <div className="text-3xl font-bold text-gray-900">All-Risk</div>
+                        <div className="text-sm text-gray-600">Verzekerd</div>
                       </div>
                       <div className="glass rounded-2xl p-6 text-center">
                         <Clock className="w-10 h-10 text-orange-400 mx-auto mb-3" />
-                        <div className="text-3xl font-bold text-gray-900">25+</div>
-                        <div className="text-sm text-gray-600">Jaar ervaring</div>
+                        <div className="text-3xl font-bold text-gray-900">NIWO</div>
+                        <div className="text-sm text-gray-600">Gecertificeerd</div>
                       </div>
                     </div>
                   </div>
@@ -517,8 +522,8 @@ export default function Home() {
             <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-red-500/0 via-red-500/50 to-red-500/0 -translate-y-1/2" />
 
             {[
-              { step: "01", title: "Contact Opnemen", desc: "Bel ons of vul het formulier in. We reageren binnen 15 minuten." },
-              { step: "02", title: "Offerte Ontvangen", desc: "Gratis offerte zonder verplichtingen. Altijd de beste prijs." },
+              { step: "01", title: "Contact Opnemen", desc: "Bel ons of vul het formulier in. We reageren binnen 30 minuten." },
+              { step: "02", title: "Offerte Ontvangen", desc: "Gratis offerte zonder verplichtingen. Altijd een eerlijke prijs." },
               { step: "03", title: "Geregeld!", desc: "Wij regelen alles. Jij hoeft alleen maar te ontvangen." },
             ].map((item, i) => (
               <motion.div
@@ -557,7 +562,7 @@ export default function Home() {
                 Neem <span className="gradient-text">Contact</span> Op
               </h2>
               <p className="text-xl text-gray-600">
-                Vul het formulier in en we nemen binnen 15 minuten contact met je op.
+                Vul het formulier in en we nemen binnen 30 minuten contact met je op.
               </p>
             </div>
 
@@ -679,7 +684,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div className="md:col-span-2">
-              <div className="flex items-center gap-3 mb-6">
+              <Link href="/">
                 <Image
                   src="/logo.png"
                   alt="DirectAutoHulp"
@@ -687,9 +692,9 @@ export default function Home() {
                   height={240}
                   className="h-44 w-auto mb-6"
                 />
-              </div>
+              </Link>
               <p className="text-gray-600 mb-6 max-w-md">
-                Europa's meest betrouwbare partner voor al je auto-gerelateerde zaken. 
+                Uw betrouwbare partner voor autotransport, pechhulp en auto inkoop. 
                 24/7 beschikbaar, professioneel en transparant.
               </p>
             </div>

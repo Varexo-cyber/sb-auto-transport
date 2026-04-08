@@ -8,7 +8,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "DirectAutoHulp | Europa's Nr. 1 Autotransport & Pechhulp",
+  title: "DirectAutoHulp | Autotransport, Pechhulp & Auto Inkoop",
   description: "Professioneel auto transport door heel Europa. 24/7 pechhulp, auto inkoop tegen beste prijzen. Snel, veilig en betrouwbaar.",
   icons: {
     icon: [

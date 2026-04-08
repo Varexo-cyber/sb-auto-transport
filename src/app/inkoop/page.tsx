@@ -29,6 +29,117 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 
+// RDW API Types - UITGEBREID met alle beschikbare velden
+interface RDWVehicleData {
+  kenteken: string;
+  voertuigsoort: string;
+  merk: string;
+  handelsbenaming: string;
+  eerste_kleur: string;
+  tweede_kleur?: string;
+  catalogusprijs: string;
+  massa_rijklaar: string;
+  massa_ledig_voertuig?: string;
+  aantal_zitplaatsen: string;
+  aantal_deuren: string;
+  aantal_wielen?: string;
+  brandstof_omschrijving?: string;
+  brandstof_omschrijving_2?: string;
+  zuinigheidsclassificatie: string;
+  datum_eerste_toelating: string;
+  datum_eerste_afgifte_nederland?: string;
+  datum_eerste_tenaamstelling?: string;
+  wielbasis: string;
+  export_indicator: string;
+  wam_verzekerd: string;
+  aantal_cilinders: string;
+  cilinderinhoud: string;
+  nettomaximumvermogen?: string;
+  toerental_geregistreerd?: string;
+  breedte: string;
+  lengte: string;
+  hoogte_voertuig?: string;
+  maximum_massa_trekken_ongeremd?: string;
+  maximum_massa_trekken_geremd?: string;
+  apk_vervaldatum?: string;
+  vervaldatum_apk?: string;
+  aantal_rolstoelplaatsen?: string;
+  snelheidsbegrenzer?: string;
+  laadvermogen?: string;
+  voertuigklasse?: string;
+  inrichting?: string;
+  uitvoering?: string;
+}
+
+// RDW API Service
+// Fetch Vehicle Image from CarQuery API (free)
+async function fetchVehicleImage(merk: string, model: string): Promise<string | null> {
+  try {
+    // Use Wikipedia API for car images
+    const searchQuery = `${merk} ${model}`.replace(/\s+/g, '_');
+    const wikiResponse = await fetch(
+      `https://en.wikipedia.org/w/api.php?action=query&list=search&srsearch=${encodeURIComponent(merk + ' ' + model)}&format=json&origin=*`
+    );
+    
+    if (wikiResponse.ok) {
+      const wikiData = await wikiResponse.json();
+      if (wikiData.query?.search?.length > 0) {
+        const pageTitle = wikiData.query.search[0].title;
+        const imageResponse = await fetch(
+          `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(pageTitle)}&prop=pageimages&format=json&pithumbsize=500&origin=*`
+        );
+        
+        if (imageResponse.ok) {
+          const imageData = await imageResponse.json();
+          const pages = imageData.query?.pages;
+          if (pages) {
+            const pageId = Object.keys(pages)[0];
+            if (pages[pageId]?.thumbnail?.source) {
+              return pages[pageId].thumbnail.source;
+            }
+          }
+        }
+      }
+    }
+    
+    return null;
+  } catch (error) {
+    console.error("Image fetch error:", error);
+    return null;
+  }
+}
+
+async function fetchRDWVehicleData(kenteken: string): Promise<{ vehicle: RDWVehicleData | null; image: string | null }> {
+  try {
+    const formattedKenteken = kenteken.replace(/-/g, "").toUpperCase();
+    
+    // Haal voertuiggegevens op
+    const response = await fetch(
+      `https://opendata.rdw.nl/resource/m9d7-ebf2.json?kenteken=${formattedKenteken}`
+    );
+    
+    if (!response.ok) {
+      throw new Error("Failed to fetch vehicle data");
+    }
+    
+    const data = await response.json();
+    
+    if (data && data.length > 0) {
+      const vehicle = data[0] as RDWVehicleData;
+      
+      // Haal afbeelding op
+      const image = await fetchVehicleImage(vehicle.merk, vehicle.handelsbenaming);
+      
+      return { vehicle, image };
+    }
+    
+    return { vehicle: null, image: null };
+  } catch (error) {
+    console.error("RDW API Error:", error);
+    return { vehicle: null, image: null };
+  }
+}
+
 // Sell Car Popup Component
 function SellCarPopup({ onClose }: { onClose: () => void }) {
   return (
@@ -156,75 +267,242 @@ function LicensePlateInput({ onSubmit }: { onSubmit: (plate: string) => void }) 
   );
 }
 
-// Car Value Display Component
-function CarValueResult({ plate, onClose }: { plate: string; onClose: () => void }) {
+// Vehicle Info Popup Component - WITH REAL RDW DATA + IMAGE
+function VehicleInfoPopup({ 
+  plate, 
+  onClose 
+}: { 
+  plate: string; 
+  onClose: () => void;
+}) {
   const [loading, setLoading] = useState(true);
-  const [value, setValue] = useState<number | null>(null);
+  const [vehicleData, setVehicleData] = useState<RDWVehicleData | null>(null);
+  const [vehicleImage, setVehicleImage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setValue(Math.floor(Math.random() * 15000) + 2000);
-      setLoading(false);
-    }, 2000);
-    return () => clearTimeout(timer);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const result = await fetchRDWVehicleData(plate);
+        
+        if (result.vehicle) {
+          setVehicleData(result.vehicle);
+          setVehicleImage(result.image);
+        } else {
+          setError("Geen voertuiggegevens gevonden voor dit kenteken");
+        }
+      } catch (err) {
+        setError("Er ging iets mis bij het ophalen van de gegevens");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
   }, [plate]);
+
+  const formatDate = (dateStr: string) => {
+    if (!dateStr || dateStr.length !== 8) return "Onbekend";
+    const year = dateStr.substring(0, 4);
+    const month = dateStr.substring(4, 6);
+    const day = dateStr.substring(6, 8);
+    return `${day}-${month}-${year}`;
+  };
+
+  // Get brandstof description
+  const getBrandstof = () => {
+    if (vehicleData?.brandstof_omschrijving && vehicleData.brandstof_omschrijving !== "Niet geregistreerd") {
+      return vehicleData.brandstof_omschrijving;
+    }
+    if (vehicleData?.brandstof_omschrijving_2 && vehicleData.brandstof_omschrijving_2 !== "Niet geregistreerd") {
+      return vehicleData.brandstof_omschrijving_2;
+    }
+    return "Onbekend";
+  };
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.9 }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
     >
-      <div className="glass-card rounded-3xl p-8 max-w-md w-full text-center relative">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9, y: 50 }}
+        animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 50 }}
+        className="glass-card rounded-3xl p-6 max-w-3xl w-full max-h-[95vh] overflow-y-auto relative"
+      >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/10 flex items-center justify-center text-gray-900 hover:bg-white/20 transition-colors"
+          className="absolute top-4 right-4 w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-900 hover:bg-gray-200 transition-colors z-10"
         >
           <X className="w-5 h-5" />
         </button>
 
         {loading ? (
-          <div className="py-8">
+          <div className="py-12 text-center">
             <motion.div
               animate={{ rotate: 360 }}
               transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
               className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full mx-auto mb-4"
             />
-            <p className="text-gray-600">Opzoeken kenteken {plate}...</p>
+            <p className="text-gray-600 text-lg">RDW gegevens ophalen voor {plate}...</p>
+            <p className="text-gray-400 text-sm mt-2">Even geduld a.u.b.</p>
           </div>
-        ) : (
-          <div className="py-4">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/20 mb-6">
-              <Sparkles className="w-5 h-5 text-green-400" />
-              <span className="text-green-400 font-semibold">Taxatie Gereed!</span>
+        ) : error ? (
+          <div className="py-12 text-center">
+            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <AlertCircle className="w-8 h-8 text-red-500" />
             </div>
-            
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Geschatte Waarde</h3>
-            <div className="text-5xl font-bold gradient-text mb-4">
-              €{value?.toLocaleString('nl-NL')}
+            <h3 className="text-xl font-bold text-gray-900 mb-2">Oeps!</h3>
+            <p className="text-gray-600 mb-4">{error}</p>
+            <button
+              onClick={onClose}
+              className="px-6 py-3 bg-gray-200 rounded-full text-gray-900 font-semibold hover:bg-gray-300 transition-all"
+            >
+              Sluiten
+            </button>
+          </div>
+        ) : vehicleData ? (
+          <div>
+            {/* Vehicle Image - NOG GROTER */}
+            <div className="relative w-full h-80 mb-6 rounded-2xl overflow-hidden bg-gray-100 shadow-lg">
+              {vehicleImage ? (
+                <img 
+                  src={vehicleImage} 
+                  alt={`${vehicleData.merk} ${vehicleData.handelsbenaming}`}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-cyan-100">
+                  <Car className="w-24 h-24 text-blue-400" />
+                </div>
+              )}
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-5">
+                <h2 className="text-3xl font-bold text-white mb-1 drop-shadow-lg">
+                  {vehicleData.merk} {vehicleData.handelsbenaming}
+                </h2>
+                <p className="text-white text-lg font-medium drop-shadow-md">Kenteken: {plate.toUpperCase()}</p>
+              </div>
             </div>
-            <p className="text-gray-600 mb-6">
-              Voor kenteken: <span className="text-gray-900 font-mono bg-yellow-400/20 px-2 py-1 rounded">{plate}</span>
-            </p>
-            
+
+            {/* Extended Vehicle Details Grid */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+              <div className="bg-gray-50 rounded-xl p-3">
+                <p className="text-xs text-gray-500 mb-1">Voertuigsoort</p>
+                <p className="font-semibold text-gray-900 text-sm">{vehicleData.voertuigsoort || "Onbekend"}</p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-3">
+                <p className="text-xs text-gray-500 mb-1">Kleur</p>
+                <p className="font-semibold text-gray-900 text-sm">{vehicleData.eerste_kleur || "Onbekend"}</p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-3">
+                <p className="text-xs text-gray-500 mb-1">Aantal deuren</p>
+                <p className="font-semibold text-gray-900 text-sm">{vehicleData.aantal_deuren || "Onbekend"}</p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-3">
+                <p className="text-xs text-gray-500 mb-1">Zitplaatsen</p>
+                <p className="font-semibold text-gray-900 text-sm">{vehicleData.aantal_zitplaatsen || "Onbekend"}</p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-3">
+                <p className="text-xs text-gray-500 mb-1">Brandstof</p>
+                <p className="font-semibold text-gray-900 text-sm">{getBrandstof()}</p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-3">
+                <p className="text-xs text-gray-500 mb-1">Vermogen</p>
+                <p className="font-semibold text-gray-900 text-sm">
+                  {vehicleData.nettomaximumvermogen ? `${Math.round(parseInt(vehicleData.nettomaximumvermogen) / 1.36)} pk` : "Onbekend"}
+                </p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-3">
+                <p className="text-xs text-gray-500 mb-1">Cilinders</p>
+                <p className="font-semibold text-gray-900 text-sm">{vehicleData.aantal_cilinders || "Onbekend"}</p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-3">
+                <p className="text-xs text-gray-500 mb-1">Cilinderinhoud</p>
+                <p className="font-semibold text-gray-900 text-sm">{vehicleData.cilinderinhoud ? `${vehicleData.cilinderinhoud} cc` : "Onbekend"}</p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-3">
+                <p className="text-xs text-gray-500 mb-1">Gewicht</p>
+                <p className="font-semibold text-gray-900 text-sm">{vehicleData.massa_rijklaar ? `${vehicleData.massa_rijklaar} kg` : "Onbekend"}</p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-3">
+                <p className="text-xs text-gray-500 mb-1">Lengte</p>
+                <p className="font-semibold text-gray-900 text-sm">{vehicleData.lengte ? `${vehicleData.lengte} cm` : "Onbekend"}</p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-3">
+                <p className="text-xs text-gray-500 mb-1">Breedte</p>
+                <p className="font-semibold text-gray-900 text-sm">{vehicleData.breedte ? `${vehicleData.breedte} cm` : "Onbekend"}</p>
+              </div>
+              <div className="bg-gray-50 rounded-xl p-3">
+                <p className="text-xs text-gray-500 mb-1">Eerste toelating</p>
+                <p className="font-semibold text-gray-900 text-sm">{formatDate(vehicleData.datum_eerste_toelating)}</p>
+              </div>
+              {vehicleData.apk_vervaldatum && (
+                <div className="bg-gray-50 rounded-xl p-3">
+                  <p className="text-xs text-gray-500 mb-1">APK vervaldatum</p>
+                  <p className="font-semibold text-gray-900 text-sm">{formatDate(vehicleData.apk_vervaldatum)}</p>
+                </div>
+              )}
+              {vehicleData.zuinigheidsclassificatie && vehicleData.zuinigheidsclassificatie !== "Niet geregistreerd" && (
+                <div className="bg-gray-50 rounded-xl p-3">
+                  <p className="text-xs text-gray-500 mb-1">Zuinigheidslabel</p>
+                  <p className="font-semibold text-gray-900 text-sm">{vehicleData.zuinigheidsclassificatie}</p>
+                </div>
+              )}
+              {/* Transmissie - RDW geeft dit helaas niet door */}
+              <div className="bg-gray-100 rounded-xl p-3 opacity-60">
+                <p className="text-xs text-gray-500 mb-1">Transmissie</p>
+                <p className="font-semibold text-gray-500 text-sm italic">Niet beschikbaar (RDW)</p>
+              </div>
+            </div>
+
+            {/* Catalog Price */}
+            {vehicleData.catalogusprijs && (
+              <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 mb-6 border border-green-200">
+                <p className="text-sm text-green-600 mb-1">Catalogusprijs (nieuw)</p>
+                <p className="text-3xl font-bold text-green-700">
+                  €{parseInt(vehicleData.catalogusprijs).toLocaleString('nl-NL')}
+                </p>
+              </div>
+            )}
+
+            {/* Action Buttons */}
             <div className="space-y-3">
-              <button className="w-full py-3 bg-gradient-to-r from-green-600 to-emerald-500 rounded-full text-gray-900 font-semibold hover:shadow-lg transition-all flex items-center justify-center gap-2">
-                <Phone className="w-4 h-4" />
-                Direct Contact voor Bod
-              </button>
+              <a
+                href={`tel:+31612345948`}
+                className="w-full py-4 bg-gradient-to-r from-green-600 to-emerald-500 rounded-full text-white font-bold text-lg hover:shadow-lg hover:shadow-green-500/30 transition-all flex items-center justify-center gap-3"
+              >
+                <Phone className="w-5 h-5" />
+                Bel voor Bod op dit Voertuig
+              </a>
               <button
                 onClick={onClose}
-                className="w-full py-3 glass rounded-full text-gray-600 hover:text-gray-900 transition-colors"
+                className="w-full py-3 glass rounded-full text-gray-600 hover:text-gray-900 transition-colors font-semibold"
               >
                 Sluiten
               </button>
             </div>
+
+            {/* RDW Source */}
+            <p className="text-center text-gray-400 text-xs mt-4">
+              Gegevens via RDW (Realtime) • Foto via Wikipedia
+            </p>
           </div>
-        )}
-      </div>
+        ) : null}
+      </motion.div>
     </motion.div>
   );
+}
+
+// Legacy Car Value Display Component (now uses real data)
+function CarValueResult({ plate, onClose }: { plate: string; onClose: () => void }) {
+  return <VehicleInfoPopup plate={plate} onClose={onClose} />;
 }
 
 export default function InkoopPage() {
@@ -279,14 +557,14 @@ export default function InkoopPage() {
                 Diensten
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-500 group-hover:w-full transition-all duration-300" />
               </Link>
+              <Link href="/inkoop" className="text-sm text-green-600 font-semibold">
+                Auto Inkoop
+              </Link>
               <Link href="/transport" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
                 Auto Transport
               </Link>
               <Link href="/pechhulp" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
                 Pechhulp
-              </Link>
-              <Link href="/inkoop" className="text-sm text-green-400 font-semibold">
-                Auto Inkoop
               </Link>
               <Link href="/#contact" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
                 Contact
@@ -316,9 +594,9 @@ export default function InkoopPage() {
           <div className="px-4 py-6 space-y-4">
             <Link href="/" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-green-500 py-2 transition-colors">Home</Link>
             <Link href="/#diensten" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-green-500 py-2 transition-colors">Diensten</Link>
+            <Link href="/inkoop" onClick={() => setIsMenuOpen(false)} className="block text-lg text-green-600 font-semibold py-2">Auto Inkoop</Link>
             <Link href="/transport" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-green-500 py-2 transition-colors">Auto Transport</Link>
             <Link href="/pechhulp" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-green-500 py-2 transition-colors">Pechhulp</Link>
-            <Link href="/inkoop" onClick={() => setIsMenuOpen(false)} className="block text-lg text-green-500 font-semibold py-2">Auto Inkoop</Link>
             <Link href="/#contact" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-green-500 py-2 transition-colors">Contact</Link>
           </div>
         </motion.div>
@@ -347,11 +625,11 @@ export default function InkoopPage() {
           className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20"
         >
           {/* Back Link */}
-          <Link href="/#diensten">
+          <Link href="/#diensten" className="block mb-4">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-8 transition-colors"
+              className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors"
             >
               <ChevronLeft className="w-5 h-5" />
               <span>Terug naar alle diensten</span>
@@ -366,7 +644,7 @@ export default function InkoopPage() {
             className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/30 border border-green-400/50 mb-10"
           >
             <Sparkles className="w-4 h-4 text-green-400" />
-            <span className="text-sm text-white font-semibold">Beste Prijs Garantie - Direct Uitbetaald</span>
+            <span className="text-sm text-white font-semibold">Eerlijke Prijs - Direct Uitbetaald</span>
           </motion.div>
 
           {/* Main Headline - COMMERCIAL */}
@@ -387,7 +665,7 @@ export default function InkoopPage() {
             className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
             style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}
           >
-            <span className="gradient-text">Direct voor de Beste Prijs!</span>
+            <span className="gradient-text">Direct & Eerlijk Verkopen!</span>
           </motion.h2>
 
           <motion.p
@@ -443,16 +721,16 @@ export default function InkoopPage() {
             className="flex flex-wrap justify-center gap-6 mt-8"
           >
             <div className="text-center">
-              <div className="text-3xl font-bold text-green-400">€50M+</div>
-              <div className="text-sm text-white/70">Ingekocht</div>
+              <div className="text-3xl font-bold text-green-400">Direct</div>
+              <div className="text-sm text-white/70">Uitbetaald</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-green-400">15.000+</div>
-              <div className="text-sm text-white/70">Klanten</div>
+              <div className="text-3xl font-bold text-green-400">Gratis</div>
+              <div className="text-sm text-white/70">Ophalen</div>
             </div>
             <div className="text-center">
-              <div className="text-3xl font-bold text-green-400">4.9/5</div>
-              <div className="text-sm text-white/70">Beoordeling</div>
+              <div className="text-3xl font-bold text-green-400">24/7</div>
+              <div className="text-sm text-white/70">Bereikbaar</div>
             </div>
           </motion.div>
         </motion.div>
@@ -589,19 +867,16 @@ export default function InkoopPage() {
               {
                 title: "Gebruikte Auto's",
                 desc: "Alle merken en modellen. Ook met hoge km-stand.",
-                price: "€500 - €50.000",
                 color: "from-blue-500 to-blue-600"
               },
               {
                 title: "Luxe & Sport",
                 desc: "Mercedes, BMW, Porsche, Audi, etc.",
-                price: "€20.000 - €150.000",
                 color: "from-purple-500 to-purple-600"
               },
               {
                 title: "Sloop / Schade",
                 desc: "Motorschade, total loss, oude auto's.",
-                price: "€100 - €5.000",
                 color: "from-orange-500 to-red-500"
               },
             ].map((item, i) => (
@@ -617,15 +892,14 @@ export default function InkoopPage() {
                   <Car className="w-8 h-8 text-white" />
                 </div>
                 <h3 className="text-2xl font-bold text-gray-900 mb-3">{item.title}</h3>
-                <p className="text-gray-600 mb-4">{item.desc}</p>
-                <div className="text-green-600 font-bold text-lg">{item.price}</div>
+                <p className="text-gray-600">{item.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* TRUST & TESTIMONIALS */}
+      {/* WAAROM BIJ ONS VERKOPEN */}
       <section className="py-20 bg-gradient-to-br from-gray-900 to-black text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -635,60 +909,44 @@ export default function InkoopPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl sm:text-5xl font-bold mb-4">
-              Tevreden <span className="gradient-text">Verkopers</span>
+              Waarom Bij Ons <span className="gradient-text">Verkopen</span>?
             </h2>
             <p className="text-xl text-gray-400">
-              Duizenden mensen gingen je voor. Bekijk hun ervaring!
+              Snel, eerlijk en zonder gedoe. Wij maken het je makkelijk.
             </p>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                name: "Peter Jansen",
-                car: "BMW 3-Serie",
-                amount: "€18.500",
-                text: "Binnen 2 uur had ik een eerlijk bod. Direct het geld ontvangen. Super service!",
-                rating: 5,
+                icon: Euro,
+                title: "Eerlijke Prijs",
+                text: "Wij bieden altijd een eerlijke marktconforme prijs voor je auto. Geen verborgen kosten of verrassingen achteraf.",
               },
               {
-                name: "Maria Koster",
-                car: "Volkswagen Golf",
-                amount: "€8.200",
-                text: "Dacht dat ik niets zou krijgen voor mijn oude Golf, maar kreeg toch nog een mooi bedrag!",
-                rating: 5,
+                icon: Car,
+                title: "Gratis Ophalen",
+                text: "Wij halen je auto gratis op, waar je ook bent in Nederland. Jij hoeft niks te regelen.",
               },
               {
-                name: "Hans van Dijk",
-                car: "Mercedes C-Klasse",
-                amount: "€22.000",
-                text: "Beste prijs gehad van 5 aanbieders. Zeer professioneel geholpen.",
-                rating: 5,
+                icon: CheckCircle,
+                title: "Direct Uitbetaald",
+                text: "Na akkoord ontvang je direct je geld. Wij regelen ook al het papierwerk voor de overschrijving.",
               },
-            ].map((review, i) => (
+            ].map((item, i) => (
               <motion.div
-                key={review.name}
+                key={item.title}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.2 }}
-                className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20"
+                className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 text-center"
               >
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: review.rating }).map((_, j) => (
-                    <Star key={j} className="w-5 h-5 text-yellow-400 fill-yellow-400" />
-                  ))}
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mx-auto mb-6">
+                  <item.icon className="w-8 h-8 text-white" />
                 </div>
-                <p className="text-gray-300 mb-6 leading-relaxed">&ldquo;{review.text}&rdquo;</p>
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
-                    <span className="text-white font-bold">{review.name[0]}</span>
-                  </div>
-                  <div>
-                    <p className="font-semibold text-white">{review.name}</p>
-                    <p className="text-sm text-green-400">{review.car} • {review.amount}</p>
-                  </div>
-                </div>
+                <h3 className="text-xl font-bold text-white mb-4">{item.title}</h3>
+                <p className="text-gray-300 leading-relaxed">{item.text}</p>
               </motion.div>
             ))}
           </div>
@@ -747,7 +1005,7 @@ export default function InkoopPage() {
                 </div>
               </Link>
               <p className="text-gray-400 mb-6 max-w-md">
-                Jouw auto direct verkocht tegen de beste prijs. Binnen 1 minuut taxatie, direct uitbetaald.
+                Uw betrouwbare partner voor autotransport, pechhulp en auto inkoop. Direct en eerlijk.
               </p>
             </div>
 

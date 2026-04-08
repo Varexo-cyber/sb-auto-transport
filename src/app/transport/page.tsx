@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -23,10 +23,61 @@ import {
   Menu,
   X,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+// Transport Popup Component
+function TransportPopup({ onClose }: { onClose: () => void }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9, y: 50 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      exit={{ opacity: 0, scale: 0.9, y: 50 }}
+      className="fixed bottom-8 right-8 z-50 max-w-sm"
+    >
+      <div className="bg-gradient-to-br from-red-600 to-orange-600 rounded-2xl p-6 text-white shadow-2xl border border-white/20">
+        <button
+          onClick={onClose}
+          className="absolute top-3 right-3 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors"
+        >
+          <X className="w-4 h-4" />
+        </button>
+        
+        <div className="flex items-center gap-3 mb-3">
+          <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
+            <Truck className="w-5 h-5" />
+          </div>
+          <span className="font-bold text-lg">Wil je je auto laten transporteren?</span>
+        </div>
+        
+        <p className="text-white/90 mb-4 text-sm">
+          Snel en veilig transport door heel Europa. Binnen 48u op locatie!
+        </p>
+        
+        <div className="flex gap-2">
+          <a
+            href="tel:+31612345948"
+            className="flex-1 py-3 bg-white text-red-700 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors flex items-center justify-center gap-2"
+          >
+            Bel Direct
+            <ArrowRight className="w-4 h-4" />
+          </a>
+        </div>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function AutoTransportPage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    // Show popup after 3 seconds
+    const timer = setTimeout(() => {
+      setShowPopup(true);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
@@ -61,14 +112,15 @@ export default function AutoTransportPage() {
                 Diensten
                 <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300" />
               </Link>
+              <Link href="/inkoop" className="text-sm text-green-600 font-semibold hover:text-green-700 transition-colors duration-300 relative group">
+                Auto Inkoop
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-500 group-hover:w-full transition-all duration-300" />
+              </Link>
               <Link href="/transport" className="text-sm text-red-400 font-semibold">
                 Auto Transport
               </Link>
               <Link href="/pechhulp" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
                 Pechhulp
-              </Link>
-              <Link href="/inkoop" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
-                Auto Inkoop
               </Link>
               <Link href="/#contact" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
                 Contact
@@ -98,9 +150,9 @@ export default function AutoTransportPage() {
           <div className="px-4 py-6 space-y-4">
             <Link href="/" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Home</Link>
             <Link href="/#diensten" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Diensten</Link>
+            <Link href="/inkoop" onClick={() => setIsMenuOpen(false)} className="block text-lg text-green-600 font-semibold hover:text-green-700 py-2 transition-colors">Auto Inkoop</Link>
             <Link href="/transport" onClick={() => setIsMenuOpen(false)} className="block text-lg text-red-500 font-semibold py-2">Auto Transport</Link>
             <Link href="/pechhulp" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Pechhulp</Link>
-            <Link href="/inkoop" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Auto Inkoop</Link>
             <Link href="/#contact" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Contact</Link>
           </div>
         </motion.div>
@@ -132,11 +184,11 @@ export default function AutoTransportPage() {
           transition={{ duration: 0.8 }}
           className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
         >
-          <Link href="/#diensten">
+          <Link href="/#diensten" className="block mb-4">
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="inline-flex items-center gap-2 text-white/60 hover:text-white mb-10 transition-colors"
+              className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors"
             >
               <ChevronLeft className="w-5 h-5" />
               <span>Terug naar alle diensten</span>
@@ -246,25 +298,25 @@ export default function AutoTransportPage() {
             {[
               {
                 name: "Standaard",
-                price: "Vanaf €0,89",
+                price: "Vanaf 0,89",
                 unit: "per km",
                 features: [
                   "Enkele auto transport",
                   "Binnen 5 werkdagen",
-                  "Basale verzekering",
+                  "All-risk verzekerd",
                   "Email updates",
                 ],
                 popular: false,
               },
               {
                 name: "Express",
-                price: "Vanaf €1,29",
+                price: "Vanaf €1,19",
                 unit: "per km",
                 features: [
                   "Prioriteit transport",
                   "Binnen 48 uur",
-                  "All-risk verzekering",
-                  "Live GPS tracking",
+                  "All-risk verzekerd",
+                  "Live GPS tracking via WhatsApp",
                   "Directe updates via WhatsApp",
                   "Ophaal en aflever op adres",
                 ],
@@ -374,7 +426,7 @@ export default function AutoTransportPage() {
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Waarom Ons Kiezen */}
       <section className="py-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
@@ -384,49 +436,41 @@ export default function AutoTransportPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
-              Wat Klanten <span className="gradient-text">Zeggen</span>
+              Waarom <span className="gradient-text">Ons Kiezen</span>?
             </h2>
           </motion.div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                name: "Mark van den Berg",
-                role: "Leaseauto vervoerd",
-                text: "Super snelle service! Mijn auto werd binnen 24 uur van Amsterdam naar Barcelona gebracht. Perfecte communicatie via WhatsApp.",
-                rating: 5,
+                icon: Shield,
+                title: "All-Risk Verzekerd",
+                text: "Al onze transporten zijn volledig all-risk verzekerd. Je auto is gedekt tegen alle schade tijdens transport.",
               },
               {
-                name: "Sandra de Vries",
-                role: "Oldtimer transport",
-                text: "Hele professionele aanpak. Mijn oldtimer werd met zorg behandeld. De GPS tracking gaf me gemoedsrust.",
-                rating: 5,
+                icon: Navigation,
+                title: "NIWO Gecertificeerd",
+                text: "Wij beschikken over een officiële NIWO vergunning voor professioneel autotransport door heel Europa.",
               },
               {
-                name: "Jan Peters",
-                role: "Bedrijfsauto's",
-                text: "Wij werken al 3 jaar met SB Auto voor onze vloot. Betrouwbaar, snel en altijd scherpe prijzen.",
-                rating: 5,
+                icon: Phone,
+                title: "24/7 Bereikbaar",
+                text: "Altijd bereikbaar via telefoon en WhatsApp. Live GPS tracking zodat je precies weet waar je auto is.",
               },
-            ].map((review, i) => (
+            ].map((item, i) => (
               <motion.div
-                key={review.name}
+                key={item.title}
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.2 }}
-                className="glass-card rounded-2xl p-6"
+                className="glass-card rounded-2xl p-8 text-center"
               >
-                <div className="flex gap-1 mb-4">
-                  {Array.from({ length: review.rating }).map((_, j) => (
-                    <Star key={j} className="w-5 h-5 text-orange-400 fill-orange-400" />
-                  ))}
+                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center mx-auto mb-6">
+                  <item.icon className="w-8 h-8 text-white" />
                 </div>
-                <p className="text-gray-700 mb-6 leading-relaxed">"{review.text}"</p>
-                <div>
-                  <p className="font-semibold text-gray-900">{review.name}</p>
-                  <p className="text-sm text-gray-600">{review.role}</p>
-                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-4">{item.title}</h3>
+                <p className="text-gray-600 leading-relaxed">{item.text}</p>
               </motion.div>
             ))}
           </div>
@@ -452,7 +496,7 @@ export default function AutoTransportPage() {
               { q: "Hoe snel kan mijn auto opgehaald worden?", a: "In de meeste gevallen kunnen we binnen 24-48 uur op locatie zijn. Voor spoedtransport hebben we een Express optie waarbij we binnen 24 uur kunnen ophalen." },
               { q: "Is mijn auto verzekerd tijdens transport?", a: "Ja, al onze transporten zijn all-risk verzekerd. Je auto is gedekt tegen alle schade die tijdens transport kan ontstaan." },
               { q: "Kan ik mijn auto volgen tijdens transport?", a: "Absoluut! Bij onze Express en Business opties krijg je toegang tot live GPS tracking zodat je precies weet waar je auto is." },
-              { q: "Transporteer jullie ook naar landen buiten de EU?", a: "Ja, wij verzorgen transport door heel Europa inclusief Zwitserland, Noorwegen en het VK. Neem contact op voor specifieke bestemmingen." },
+              { q: "Waar transporteren jullie naartoe?", a: "Wij verzorgen autotransport door de gehele Europese Unie. Van Nederland tot Spanje, Italië, Duitsland en alle andere EU-landen." },
               { q: "Hoe worden de prijzen berekend?", a: "Onze prijzen zijn afhankelijk van de afstand, type auto, en de gekozen service. Vraag een gratis offerte aan voor een exacte prijs." },
             ].map((faq, i) => (
               <motion.div
@@ -485,7 +529,7 @@ export default function AutoTransportPage() {
               Klaar om Je Auto te <span className="gradient-text">Transport</span>?
             </h2>
             <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-              Vraag nu een gratis offerte aan. We reageren binnen 15 minuten.
+              Vraag nu een gratis offerte aan. We reageren binnen 30 minuten.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -518,7 +562,7 @@ export default function AutoTransportPage() {
                 </div>
               </Link>
               <p className="text-gray-600 mb-6 max-w-md">
-                Europa's meest betrouwbare partner voor al je auto-gerelateerde zaken.
+                Uw betrouwbare partner voor autotransport, pechhulp en auto inkoop.
               </p>
             </div>
 
@@ -571,12 +615,19 @@ export default function AutoTransportPage() {
         </div>
       </footer>
 
+      {/* Transport Popup */}
+      <AnimatePresence>
+        {showPopup && (
+          <TransportPopup onClose={() => setShowPopup(false)} />
+        )}
+      </AnimatePresence>
+
       {/* WhatsApp Widget */}
       <a
         href="https://wa.me/31612345948?text=Ik%20heb%20een%20vraagje%20over%20auto%20transport"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 group"
+        className="fixed bottom-6 left-6 z-50 group"
       >
         <div className="flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white rounded-full px-4 py-3 shadow-lg hover:shadow-xl transition-all duration-300">
           <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
