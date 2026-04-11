@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import {
@@ -38,7 +38,8 @@ interface VehicleInfo {
   image?: string;
 }
 
-export default function VerkoopPage() {
+// Component that uses searchParams - wrapped in Suspense
+function VerkoopForm() {
   const searchParams = useSearchParams();
   const [mounted, setMounted] = useState(false);
   const [step, setStep] = useState(1);
@@ -51,8 +52,8 @@ export default function VerkoopPage() {
     naam: "",
     email: "",
     telefoon: "",
-    verkoopAan: "geen_voorkeur", // particulier, dealer, geen_voorkeur
-    verkoopTermijn: "direct", // direct, 4_weken, 3_maanden, geen_verkoop
+    verkoopAan: "geen_voorkeur",
+    verkoopTermijn: "direct",
   });
 
   // Get vehicle info from URL params
@@ -74,7 +75,6 @@ export default function VerkoopPage() {
     setIsSubmitting(true);
     
     try {
-      // Send data to API
       const response = await fetch("/api/send-verkoop", {
         method: "POST",
         headers: {
@@ -105,7 +105,13 @@ export default function VerkoopPage() {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  if (!mounted) return null;
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500" />
+      </div>
+    );
+  }
 
   // Success screen
   if (isSubmitted) {
@@ -451,5 +457,18 @@ export default function VerkoopPage() {
         )}
       </main>
     </div>
+  );
+}
+
+// Main page component with Suspense wrapper
+export default function VerkoopPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-500" />
+      </div>
+    }>
+      <VerkoopForm />
+    </Suspense>
   );
 }
