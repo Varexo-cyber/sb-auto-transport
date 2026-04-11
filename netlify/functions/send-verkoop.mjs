@@ -1,16 +1,16 @@
 import nodemailer from "nodemailer";
 
-export default async (event) => {
+export default async (request) => {
   // Only allow POST requests
-  if (event.httpMethod !== "POST") {
-    return {
-      statusCode: 405,
-      body: JSON.stringify({ error: "Method not allowed" }),
-    };
+  if (request.method !== "POST") {
+    return new Response(JSON.stringify({ error: "Method not allowed" }), {
+      status: 405,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   try {
-    const { vehicle, formData } = JSON.parse(event.body);
+    const { vehicle, formData } = await request.json();
 
     // Email configuration
     const RECIPIENT_EMAILS = ["info@directautohulp.nl", "info@varexo.nl"];
@@ -447,23 +447,25 @@ www.directautohulp.nl
       text: customerEmailText,
     });
 
-    return {
-      statusCode: 200,
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Content-Type",
-      },
-      body: JSON.stringify({
+    return new Response(
+      JSON.stringify({
         success: true,
         message: "Verzoek verwerkt en email verstuurd",
         recipients: RECIPIENT_EMAILS,
       }),
-    };
+      {
+        status: 200,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   } catch (error) {
     console.error("Error:", error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ success: false, message: error.message }),
-    };
+    return new Response(
+      JSON.stringify({ success: false, message: error.message }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      }
+    );
   }
 };
