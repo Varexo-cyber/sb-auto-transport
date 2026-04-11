@@ -204,26 +204,50 @@ export default function PechhulpPage() {
             <span className="text-sm text-white font-semibold">24/7 Beschikbaar - Vertrekpunt Rotterdam/Den Haag</span>
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="text-5xl sm:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
-          >
-            <span className="text-white">24/7</span>
-            <br />
-            <span className="gradient-text">Pechhulp</span>
-          </motion.h1>
+          {/* Main Headline - COMMERCIAL & CENTERED */}
+          <div className="text-center">
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-6xl sm:text-8xl lg:text-9xl font-black mb-2 tracking-tight"
+              style={{ 
+                textShadow: '0 0 40px rgba(59,130,246,0.5), 0 4px 20px rgba(0,0,0,0.8)',
+                letterSpacing: '-0.02em'
+              }}
+            >
+              <span className="text-white">24/7 PECHHULP</span>
+            </motion.h1>
+            
+            <motion.h2
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="text-5xl sm:text-7xl lg:text-8xl font-black mb-8 tracking-tight"
+              style={{ 
+                textShadow: '0 0 60px rgba(245,158,11,0.6), 0 4px 30px rgba(0,0,0,0.9)',
+                letterSpacing: '-0.02em'
+              }}
+            >
+              <span className="bg-gradient-to-r from-blue-400 via-cyan-500 to-teal-400 bg-clip-text text-transparent">
+                ALTIJD GEHOLPEN!
+              </span>
+            </motion.h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="text-xl sm:text-2xl text-gray-200 max-w-3xl mb-10"
-          >
-            Altijd en overal geholpen. Onze wegenwacht staat dag en nacht voor je klaar 
-            met professionele ondersteuning. Vertrekpunt: Rotterdam/Den Haag.
-          </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="text-2xl sm:text-3xl text-white max-w-4xl mx-auto mb-8 font-medium"
+              style={{ textShadow: '0 2px 10px rgba(0,0,0,0.9)' }}
+            >
+              Wegenwacht staat <span className="text-blue-400 font-bold">dag en nacht</span> klaar.
+              <br />
+              <span className="text-amber-400 font-bold">Snel ter plaatse</span> • 
+              <span className="text-amber-400 font-bold"> Professioneel</span> • 
+              <span className="text-amber-400 font-bold"> Rotterdam/Den Haag</span>
+            </motion.p>
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}

@@ -207,27 +207,47 @@ export default function Home() {
               <span className="text-sm text-white font-semibold">24/7 Bereikbaar - Door heel Europa</span>
             </motion.div>
 
+            {/* Main Headline - COMMERCIAL & CENTERED */}
             <motion.h1
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-5xl sm:text-7xl lg:text-8xl font-extrabold mb-6 leading-tight tracking-tight"
-              style={{ textShadow: '0 4px 20px rgba(0,0,0,0.6)' }}
+              className="text-6xl sm:text-8xl lg:text-9xl font-black mb-2 tracking-tight"
+              style={{ 
+                textShadow: '0 0 40px rgba(239,68,68,0.5), 0 4px 20px rgba(0,0,0,0.8)',
+                letterSpacing: '-0.02em'
+              }}
             >
-              <span className="text-white">Je Auto in</span>
-              <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-400 via-orange-300 to-amber-400">Veilige Handen</span>
+              <span className="text-white">JE AUTO IN</span>
             </motion.h1>
+            
+            <motion.h2
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="text-5xl sm:text-7xl lg:text-8xl font-black mb-8 tracking-tight"
+              style={{ 
+                textShadow: '0 0 60px rgba(245,158,11,0.6), 0 4px 30px rgba(0,0,0,0.9)',
+                letterSpacing: '-0.02em'
+              }}
+            >
+              <span className="bg-gradient-to-r from-red-400 via-orange-500 to-amber-400 bg-clip-text text-transparent">
+                VEILIGE HANDEN!
+              </span>
+            </motion.h2>
 
             <motion.p
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-xl sm:text-2xl text-white max-w-3xl mx-auto mb-10"
-              style={{ textShadow: '0 2px 8px rgba(0,0,0,0.5)' }}
+              className="text-2xl sm:text-3xl text-white max-w-4xl mx-auto mb-10 font-medium"
+              style={{ textShadow: '0 2px 10px rgba(0,0,0,0.9)' }}
             >
-              Professioneel transport, directe pechhulp & eerlijke inkoopprijzen. 
-              Uw betrouwbare autopartner door heel Europa.
+              <span className="text-red-400 font-bold">Transport</span> • 
+              <span className="text-amber-400 font-bold"> Pechhulp</span> • 
+              <span className="text-amber-400 font-bold"> Inkoop</span>
+              <br />
+              Door heel <span className="text-green-400 font-bold">Europa</span>.
             </motion.p>
 
             <motion.div

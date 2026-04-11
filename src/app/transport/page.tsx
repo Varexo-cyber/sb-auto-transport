@@ -205,26 +205,50 @@ export default function AutoTransportPage() {
             <span className="text-sm text-white/80 font-semibold">Professioneel Auto Transport</span>
           </motion.div>
 
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="text-5xl sm:text-7xl lg:text-8xl font-bold mb-6 leading-tight"
-          >
-            <span className="text-white">Auto Transport</span>
-            <br />
-            <span className="gradient-text">Door Heel Europa</span>
-          </motion.h1>
+          {/* Main Headline - COMMERCIAL & CENTERED */}
+          <div className="text-center">
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+              className="text-6xl sm:text-8xl lg:text-9xl font-black mb-2 tracking-tight"
+              style={{ 
+                textShadow: '0 0 40px rgba(239,68,68,0.5), 0 4px 20px rgba(0,0,0,0.8)',
+                letterSpacing: '-0.02em'
+              }}
+            >
+              <span className="text-white">AUTO TRANSPORT</span>
+            </motion.h1>
+            
+            <motion.h2
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              className="text-5xl sm:text-7xl lg:text-8xl font-black mb-8 tracking-tight"
+              style={{ 
+                textShadow: '0 0 60px rgba(245,158,11,0.6), 0 4px 30px rgba(0,0,0,0.9)',
+                letterSpacing: '-0.02em'
+              }}
+            >
+              <span className="bg-gradient-to-r from-red-400 via-orange-500 to-amber-400 bg-clip-text text-transparent">
+                DOOR HEEL EUROPA!
+              </span>
+            </motion.h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl sm:text-2xl text-gray-200 max-w-3xl mb-10"
-          >
-            Snel, veilig en verzekerd transport van jouw auto. Van deur tot deur, 
-            met GPS-tracking en volledige verzekering.
-          </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="text-2xl sm:text-3xl text-white max-w-4xl mx-auto mb-8 font-medium"
+              style={{ textShadow: '0 2px 10px rgba(0,0,0,0.9)' }}
+            >
+              Snel, veilig en <span className="text-red-400 font-bold">100% verzekerd</span>.
+              <br />
+              <span className="text-amber-400 font-bold">GPS-tracking</span> • 
+              <span className="text-amber-400 font-bold"> Deur tot deur</span> • 
+              <span className="text-amber-400 font-bold"> Binnen 48u</span>
+            </motion.p>
+          </div>
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
