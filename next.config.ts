@@ -7,6 +7,7 @@ const nextConfig: NextConfig = {
     unoptimized: true,
   },
   devIndicators: false,
+  serverExternalPackages: ['nodemailer'],
 };
 
 export default nextConfig;
