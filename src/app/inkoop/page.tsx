@@ -474,18 +474,18 @@ function VehicleInfoPopup({
 
             {/* Action Buttons */}
             <div className="space-y-3">
-              <a
-                href={`tel:+31612345948`}
+              <Link
+                href={`/verkoop?kenteken=${plate.toUpperCase()}&merk=${encodeURIComponent(vehicleData.merk)}&model=${encodeURIComponent(vehicleData.handelsbenaming)}&kleur=${encodeURIComponent(vehicleData.eerste_kleur)}&brandstof=${encodeURIComponent(vehicleData.brandstof_omschrijving || '')}&prijs=${vehicleData.catalogusprijs || ''}&image=${encodeURIComponent(vehicleImage || '')}`}
                 className="w-full py-4 bg-gradient-to-r from-green-600 to-emerald-500 rounded-full text-white font-bold text-lg hover:shadow-lg hover:shadow-green-500/30 transition-all flex items-center justify-center gap-3"
               >
-                <Phone className="w-5 h-5" />
-                Bel voor Bod op dit Voertuig
-              </a>
+                <Car className="w-5 h-5" />
+                Ja, dit is mijn auto - Waardevraag
+              </Link>
               <button
                 onClick={onClose}
                 className="w-full py-3 glass rounded-full text-gray-600 hover:text-gray-900 transition-colors font-semibold"
               >
-                Sluiten
+                Nee, fout kenteken
               </button>
             </div>
 
@@ -647,59 +647,73 @@ export default function InkoopPage() {
             <span className="text-sm text-white font-semibold">Eerlijke Prijs - Direct Uitbetaald</span>
           </motion.div>
 
-          {/* Main Headline - COMMERCIAL */}
-          <motion.h1
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
-            className="text-5xl sm:text-7xl lg:text-8xl font-bold mb-4 leading-tight"
-            style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}
-          >
-            <span className="text-white">Verkoop je Auto</span>
-          </motion.h1>
-          
-          <motion.h2
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 }}
-            className="text-4xl sm:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
-            style={{ textShadow: '0 4px 20px rgba(0,0,0,0.8)' }}
-          >
-            <span className="gradient-text">Direct & Eerlijk Verkopen!</span>
-          </motion.h2>
+          {/* Main Headline - COMMERCIAL & CENTERED */}
+          <div className="text-center">
+            <motion.h1
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="text-6xl sm:text-8xl lg:text-9xl font-black mb-2 tracking-tight"
+              style={{ 
+                textShadow: '0 0 40px rgba(16,185,129,0.5), 0 4px 20px rgba(0,0,0,0.8)',
+                letterSpacing: '-0.02em'
+              }}
+            >
+              <span className="text-white">VERKOOP JE AUTO</span>
+            </motion.h1>
+            
+            <motion.h2
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4 }}
+              className="text-5xl sm:text-7xl lg:text-8xl font-black mb-8 tracking-tight"
+              style={{ 
+                textShadow: '0 0 60px rgba(245,158,11,0.6), 0 4px 30px rgba(0,0,0,0.9)',
+                letterSpacing: '-0.02em'
+              }}
+            >
+              <span className="bg-gradient-to-r from-green-400 via-emerald-500 to-teal-400 bg-clip-text text-transparent">
+                DIRECT & EERLIJK!
+              </span>
+            </motion.h2>
 
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="text-xl sm:text-2xl text-white max-w-3xl mb-6"
-            style={{ textShadow: '0 2px 8px rgba(0,0,0,0.8)' }}
-          >
-            Binnen 1 minuut je waarde bekend. <strong className="text-green-400">Direct bod, geen gedoe, cash geld!</strong>
-          </motion.p>
+            <motion.p
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="text-2xl sm:text-3xl text-white max-w-4xl mx-auto mb-8 font-medium"
+              style={{ textShadow: '0 2px 10px rgba(0,0,0,0.9)' }}
+            >
+              Binnen <span className="text-green-400 font-bold">1 minuut</span> je waarde bekend.
+              <br />
+              <span className="text-amber-400 font-bold">Direct bod</span> • 
+              <span className="text-amber-400 font-bold"> Geen gedoe</span> • 
+              <span className="text-amber-400 font-bold"> Cash geld</span>
+            </motion.p>
+          </div>
           
-          {/* Trust badges */}
+          {/* Trust badges - CENTERED */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.6 }}
-            className="flex flex-wrap gap-4 mb-8"
+            className="flex flex-wrap justify-center gap-6 mb-10"
           >
-            <div className="flex items-center gap-2 text-white/90">
+            <div className="flex items-center gap-2 text-white/90 bg-white/10 px-4 py-2 rounded-full">
               <CheckCircle className="w-5 h-5 text-green-400" />
-              <span className="text-sm">Gratis taxatie</span>
+              <span className="text-sm font-medium">Gratis taxatie</span>
             </div>
-            <div className="flex items-center gap-2 text-white/90">
+            <div className="flex items-center gap-2 text-white/90 bg-white/10 px-4 py-2 rounded-full">
               <CheckCircle className="w-5 h-5 text-green-400" />
-              <span className="text-sm">Direct geld</span>
+              <span className="text-sm font-medium">Direct geld</span>
             </div>
-            <div className="flex items-center gap-2 text-white/90">
+            <div className="flex items-center gap-2 text-white/90 bg-white/10 px-4 py-2 rounded-full">
               <CheckCircle className="w-5 h-5 text-green-400" />
-              <span className="text-sm">Alle auto&apos;s welkom</span>
+              <span className="text-sm font-medium">Alle auto&apos;s welkom</span>
             </div>
-            <div className="flex items-center gap-2 text-white/90">
+            <div className="flex items-center gap-2 text-white/90 bg-white/10 px-4 py-2 rounded-full">
               <CheckCircle className="w-5 h-5 text-green-400" />
-              <span className="text-sm">Papierwerk geregeld</span>
+              <span className="text-sm font-medium">Papierwerk geregeld</span>
             </div>
           </motion.div>
 
