@@ -133,13 +133,17 @@ function VerkoopForm() {
             We gaan direct voor je aan de slag. Je ontvangt binnen <strong>1-2 uur</strong> een
             persoonlijk bod op je {vehicle.merk} {vehicle.handelsbenaming}.
           </p>
-          <div className="bg-green-50 rounded-xl p-4 mb-6">
-            <p className="text-sm text-green-700 flex items-center gap-2 mb-1">
-              <Inbox className="w-4 h-4" />
-              Check je email (ook spam folder)
+          <div className="bg-green-50 rounded-xl p-4 mb-6 space-y-2">
+            <p className="text-sm text-green-700 flex items-center gap-2">
+              <Inbox className="w-4 h-4 flex-shrink-0" />
+              Je ontvangt een bevestiging per e-mail
             </p>
             <p className="text-sm text-green-700 flex items-center gap-2">
-              <Smartphone className="w-4 h-4" />
+              <Mail className="w-4 h-4 flex-shrink-0" />
+              Check ook je spamfolder!
+            </p>
+            <p className="text-sm text-green-700 flex items-center gap-2">
+              <Smartphone className="w-4 h-4 flex-shrink-0" />
               We bellen je binnen 30 minuten
             </p>
           </div>
