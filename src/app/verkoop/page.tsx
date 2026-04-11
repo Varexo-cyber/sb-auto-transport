@@ -25,6 +25,13 @@ import {
   X,
   Inbox,
   Smartphone,
+  Fuel,
+  Settings,
+  CalendarDays,
+  AlertTriangle,
+  Camera,
+  Paperclip,
+  Trash2,
 } from "lucide-react";
 
 // Types
@@ -49,12 +56,18 @@ function VerkoopForm() {
   // Form data
   const [formData, setFormData] = useState({
     kilometerstand: "",
+    brandstof: "",
+    transmissie: "",
+    bouwjaar: "",
+    schade: "",
+    schadeOmschrijving: "",
     naam: "",
     email: "",
     telefoon: "",
     verkoopAan: "geen_voorkeur",
     verkoopTermijn: "direct",
   });
+  const [schadeFotos, setSchadeFotos] = useState<File[]>([]);
 
   // Get vehicle info from URL params
   const vehicle: VehicleInfo = {
@@ -75,6 +88,17 @@ function VerkoopForm() {
     setIsSubmitting(true);
     
     try {
+      // Convert photos to base64
+      const fotoData: { name: string; data: string }[] = [];
+      for (const file of schadeFotos) {
+        const base64 = await new Promise<string>((resolve) => {
+          const reader = new FileReader();
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.readAsDataURL(file);
+        });
+        fotoData.push({ name: file.name, data: base64 });
+      }
+
       const response = await fetch("/.netlify/functions/send-verkoop", {
         method: "POST",
         headers: {
@@ -83,6 +107,7 @@ function VerkoopForm() {
         body: JSON.stringify({
           vehicle,
           formData,
+          schadeFotos: fotoData,
         }),
       });
 
@@ -178,7 +203,7 @@ function VerkoopForm() {
       {/* Progress */}
       <div className="max-w-4xl mx-auto px-4 py-6">
         <div className="flex items-center justify-center gap-2 mb-2">
-          {[1, 2, 3].map((i) => (
+          {[1, 2, 3, 4].map((i) => (
             <div
               key={i}
               className={`w-3 h-3 rounded-full transition-colors ${
@@ -188,7 +213,7 @@ function VerkoopForm() {
           ))}
         </div>
         <p className="text-center text-sm text-gray-500">
-          Stap {step} van 3
+          Stap {step} van 4
         </p>
       </div>
 
@@ -224,7 +249,7 @@ function VerkoopForm() {
           </div>
         </motion.div>
 
-        {/* Step 1: Kilometerstand */}
+        {/* Step 1: Voertuig Details */}
         {step === 1 && (
           <motion.div
             initial={{ opacity: 0, x: 20 }}
@@ -233,31 +258,79 @@ function VerkoopForm() {
           >
             <div className="flex items-center gap-3 mb-6">
               <div className="w-12 h-12 bg-green-100 rounded-xl flex items-center justify-center">
-                <Gauge className="w-6 h-6 text-green-600" />
+                <Car className="w-6 h-6 text-green-600" />
               </div>
               <div>
-                <h2 className="text-xl font-bold text-gray-900">Hoeveel kilometer staat er op?</h2>
-                <p className="text-sm text-gray-500">Dit bepaalt mede de waarde van je auto</p>
+                <h2 className="text-xl font-bold text-gray-900">Voertuig details</h2>
+                <p className="text-sm text-gray-500">Vertel ons meer over je auto</p>
               </div>
             </div>
 
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Huidige kilometerstand
-              </label>
-              <input
-                type="number"
-                value={formData.kilometerstand}
-                onChange={(e) => updateForm("kilometerstand", e.target.value)}
-                placeholder="Bijv. 85.000"
-                className="w-full px-4 py-4 text-lg border-2 border-gray-200 rounded-xl focus:border-green-500 focus:outline-none transition-colors"
-              />
-              <p className="text-sm text-gray-400 mt-2">km</p>
+            <div className="space-y-4 mb-6">
+              {/* Kilometerstand */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <Gauge className="w-4 h-4" />
+                  Kilometerstand
+                </label>
+                <input
+                  type="number"
+                  value={formData.kilometerstand}
+                  onChange={(e) => updateForm("kilometerstand", e.target.value)}
+                  placeholder="Bijv. 85000"
+                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:border-green-500 focus:outline-none transition-colors"
+                />
+              </div>
+
+              {/* Bouwjaar */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <CalendarDays className="w-4 h-4" />
+                  Bouwjaar
+                </label>
+                <input
+                  type="number"
+                  value={formData.bouwjaar}
+                  onChange={(e) => updateForm("bouwjaar", e.target.value)}
+                  placeholder="Bijv. 2019"
+                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:border-green-500 focus:outline-none transition-colors"
+                />
+              </div>
+
+              {/* Brandstof */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <Fuel className="w-4 h-4" />
+                  Brandstof
+                </label>
+                <input
+                  type="text"
+                  value={formData.brandstof}
+                  onChange={(e) => updateForm("brandstof", e.target.value)}
+                  placeholder="Bijv. Benzine, Diesel, Elektrisch, Hybride"
+                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:border-green-500 focus:outline-none transition-colors"
+                />
+              </div>
+
+              {/* Transmissie */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                  <Settings className="w-4 h-4" />
+                  Transmissie
+                </label>
+                <input
+                  type="text"
+                  value={formData.transmissie}
+                  onChange={(e) => updateForm("transmissie", e.target.value)}
+                  placeholder="Bijv. Automaat, Handgeschakeld"
+                  className="w-full px-4 py-4 border-2 border-gray-200 rounded-xl focus:border-green-500 focus:outline-none transition-colors"
+                />
+              </div>
             </div>
 
             <button
               onClick={() => setStep(2)}
-              disabled={!formData.kilometerstand}
+              disabled={!formData.kilometerstand || !formData.bouwjaar || !formData.brandstof || !formData.transmissie}
               className="w-full py-4 bg-gradient-to-r from-green-600 to-emerald-500 rounded-full text-white font-bold text-lg hover:shadow-lg hover:shadow-green-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               Volgende
@@ -266,8 +339,132 @@ function VerkoopForm() {
           </motion.div>
         )}
 
-        {/* Step 2: Contact Info */}
+        {/* Step 2: Schade */}
         {step === 2 && (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            className="bg-white rounded-3xl p-6 md:p-8 shadow-xl"
+          >
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-12 h-12 bg-orange-100 rounded-xl flex items-center justify-center">
+                <AlertTriangle className="w-6 h-6 text-orange-600" />
+              </div>
+              <div>
+                <h2 className="text-xl font-bold text-gray-900">Eventuele schade</h2>
+                <p className="text-sm text-gray-500">Heeft je auto schade?</p>
+              </div>
+            </div>
+
+            <div className="mb-6">
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => { updateForm("schade", "ja"); }}
+                  className={`p-4 rounded-xl border-2 text-center transition-all ${
+                    formData.schade === "ja"
+                      ? "border-orange-500 bg-orange-50"
+                      : "border-gray-200 hover:border-gray-300"
+                  }`}
+                >
+                  <AlertTriangle className="w-8 h-8 mx-auto mb-2 text-orange-500" />
+                  <span className="font-medium">Ja, er is schade</span>
+                </button>
+                <button
+                  onClick={() => { updateForm("schade", "nee"); updateForm("schadeOmschrijving", ""); setSchadeFotos([]); }}
+                  className={`p-4 rounded-xl border-2 text-center transition-all ${
+                    formData.schade === "nee"
+                      ? "border-green-500 bg-green-50"
+                      : "border-gray-200 hover:border-gray-300"
+                  }`}
+                >
+                  <CheckCircle className="w-8 h-8 mx-auto mb-2 text-green-500" />
+                  <span className="font-medium">Nee, geen schade</span>
+                </button>
+              </div>
+            </div>
+
+            {formData.schade === "ja" && (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-4 mb-6"
+              >
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Omschrijving van de schade
+                  </label>
+                  <textarea
+                    value={formData.schadeOmschrijving}
+                    onChange={(e) => updateForm("schadeOmschrijving", e.target.value)}
+                    placeholder="Beschrijf de schade zo gedetailleerd mogelijk..."
+                    rows={4}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:outline-none transition-colors resize-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                    <Camera className="w-4 h-4" />
+                    Foto&apos;s van de schade (optioneel)
+                  </label>
+                  <label className="flex items-center justify-center gap-2 p-4 border-2 border-dashed border-gray-300 rounded-xl cursor-pointer hover:border-orange-400 hover:bg-orange-50 transition-colors">
+                    <Paperclip className="w-5 h-5 text-gray-400" />
+                    <span className="text-gray-500">Klik om foto&apos;s toe te voegen</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      multiple
+                      className="hidden"
+                      onChange={(e) => {
+                        if (e.target.files) {
+                          setSchadeFotos((prev) => [...prev, ...Array.from(e.target.files!)]);
+                        }
+                      }}
+                    />
+                  </label>
+                  {schadeFotos.length > 0 && (
+                    <div className="mt-3 space-y-2">
+                      {schadeFotos.map((file, index) => (
+                        <div key={index} className="flex items-center justify-between bg-gray-50 rounded-lg p-3">
+                          <div className="flex items-center gap-2 min-w-0">
+                            <Camera className="w-4 h-4 text-gray-400 flex-shrink-0" />
+                            <span className="text-sm text-gray-600 truncate">{file.name}</span>
+                          </div>
+                          <button
+                            onClick={() => setSchadeFotos((prev) => prev.filter((_, i) => i !== index))}
+                            className="text-red-400 hover:text-red-600 flex-shrink-0 ml-2"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            )}
+
+            <div className="flex gap-3">
+              <button
+                onClick={() => setStep(1)}
+                className="flex-1 py-4 border-2 border-gray-200 rounded-full text-gray-600 font-semibold hover:border-gray-300 transition-colors"
+              >
+                Terug
+              </button>
+              <button
+                onClick={() => setStep(3)}
+                disabled={!formData.schade || (formData.schade === "ja" && !formData.schadeOmschrijving)}
+                className="flex-[2] py-4 bg-gradient-to-r from-green-600 to-emerald-500 rounded-full text-white font-bold hover:shadow-lg hover:shadow-green-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              >
+                Volgende
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Step 3: Contact Info */}
+        {step === 3 && (
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -326,13 +523,13 @@ function VerkoopForm() {
 
             <div className="flex gap-3">
               <button
-                onClick={() => setStep(1)}
+                onClick={() => setStep(2)}
                 className="flex-1 py-4 border-2 border-gray-200 rounded-full text-gray-600 font-semibold hover:border-gray-300 transition-colors"
               >
                 Terug
               </button>
               <button
-                onClick={() => setStep(3)}
+                onClick={() => setStep(4)}
                 disabled={!formData.naam || !formData.email || !formData.telefoon}
                 className="flex-[2] py-4 bg-gradient-to-r from-blue-600 to-blue-500 rounded-full text-white font-bold hover:shadow-lg hover:shadow-blue-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
               >
@@ -343,8 +540,8 @@ function VerkoopForm() {
           </motion.div>
         )}
 
-        {/* Step 3: Verkoop Voorkeuren */}
-        {step === 3 && (
+        {/* Step 4: Verkoop Voorkeuren */}
+        {step === 4 && (
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
@@ -429,7 +626,7 @@ function VerkoopForm() {
             {/* Submit */}
             <div className="flex gap-3">
               <button
-                onClick={() => setStep(2)}
+                onClick={() => setStep(3)}
                 className="flex-1 py-4 border-2 border-gray-200 rounded-full text-gray-600 font-semibold hover:border-gray-300 transition-colors"
               >
                 Terug
