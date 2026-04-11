@@ -210,7 +210,7 @@ export default function PechhulpPage() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-6xl sm:text-8xl lg:text-9xl font-black mb-2 tracking-tight"
+              className="text-5xl sm:text-7xl lg:text-8xl font-black mb-2 tracking-tight"
               style={{ 
                 textShadow: '0 0 40px rgba(59,130,246,0.5), 0 4px 20px rgba(0,0,0,0.8)',
                 letterSpacing: '-0.02em'
@@ -223,7 +223,7 @@ export default function PechhulpPage() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-5xl sm:text-7xl lg:text-8xl font-black mb-8 tracking-tight"
+              className="text-4xl sm:text-6xl lg:text-7xl font-black mb-8 tracking-tight"
               style={{ 
                 textShadow: '0 0 60px rgba(245,158,11,0.6), 0 4px 30px rgba(0,0,0,0.9)',
                 letterSpacing: '-0.02em'
@@ -253,7 +253,7 @@ export default function PechhulpPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5 }}
-            className="flex flex-col sm:flex-row gap-4"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
           >
             <a
               href="tel:+31612345948"
