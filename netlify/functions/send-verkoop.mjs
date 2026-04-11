@@ -93,21 +93,43 @@ export default async (request, context) => {
     auth: { user: zohoUser, pass: process.env.ZOHO_SMTP_PASS },
   }) : null;
 
-  // 1. Team notificatie vanuit info@varexo.nl naar info@directautohulp.nl + info@varexo.nl
-  try {
-    if (smtpTransporter) {
+  // 1. Team notificatie naar info@directautohulp.nl + info@varexo.nl
+  let teamEmailSent = false;
+
+  // Probeer eerst via SMTP (info@varexo.nl)
+  if (smtpTransporter) {
+    try {
       await smtpTransporter.sendMail({
         from: '"DirectAutoHulp Verkoop" <' + process.env.SMTP_USER + '>',
         to: RECIPIENT_EMAILS,
         subject: emailSubject,
         text: emailText,
       });
-      console.log("Team email OK via SMTP");
-    } else {
-      console.log("SMTP niet beschikbaar - team email overgeslagen");
+      console.log("Team email OK via SMTP (varexo)");
+      teamEmailSent = true;
+    } catch (err) {
+      console.error("SMTP (varexo) fout:", err.message);
     }
-  } catch (err) {
-    console.error("Team email fout:", err.message);
+  }
+
+  // Fallback: als SMTP faalt, stuur via Zoho
+  if (!teamEmailSent && zoho) {
+    try {
+      await zoho.sendMail({
+        from: '"DirectAutoHulp Verkoop" <' + zohoUser + '>',
+        to: RECIPIENT_EMAILS,
+        subject: emailSubject,
+        text: emailText,
+      });
+      console.log("Team email OK via Zoho (fallback)");
+      teamEmailSent = true;
+    } catch (err) {
+      console.error("Zoho fallback team email fout:", err.message);
+    }
+  }
+
+  if (!teamEmailSent) {
+    console.error("TEAM EMAIL NIET VERSTUURD - beide methodes gefaald");
   }
 
   // 2. Klant bevestiging vanuit info@directautohulp.nl
