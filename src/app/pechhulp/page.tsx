@@ -101,7 +101,7 @@ export default function PechhulpPage() {
                 alt="DirectAutoHulp"
                 width={800}
                 height={240}
-                className="h-16 sm:h-20 md:h-32 w-auto"
+                className="h-12 sm:h-16 md:h-20 lg:h-32 w-auto"
               />
               </motion.div>
             </Link>
@@ -164,7 +164,8 @@ export default function PechhulpPage() {
             src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=1920&q=80"
             alt="Car service"
             fill
-            className="object-cover"
+            className="object-cover object-center"
+            sizes="100vw"
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/90" />
@@ -174,7 +175,7 @@ export default function PechhulpPage() {
         <motion.div
           animate={{ y: [0, -20, 0], rotate: [0, 2, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/3 right-20 w-96 h-96 bg-gradient-to-br from-blue-600/30 to-transparent rounded-full blur-3xl"
+          className="absolute top-1/3 right-4 sm:right-20 w-48 sm:w-96 h-48 sm:h-96 bg-gradient-to-br from-blue-600/30 to-transparent rounded-full blur-3xl"
         />
 
         <motion.div
@@ -210,7 +211,7 @@ export default function PechhulpPage() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-5xl sm:text-7xl lg:text-8xl font-black mb-2 tracking-tight"
+              className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-2 tracking-tight"
               style={{ 
                 textShadow: '0 0 40px rgba(59,130,246,0.5), 0 4px 20px rgba(0,0,0,0.8)',
                 letterSpacing: '-0.02em'
@@ -223,7 +224,7 @@ export default function PechhulpPage() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-4xl sm:text-6xl lg:text-7xl font-black mb-8 tracking-tight"
+              className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-8 tracking-tight"
               style={{ 
                 textShadow: '0 0 60px rgba(245,158,11,0.6), 0 4px 30px rgba(0,0,0,0.9)',
                 letterSpacing: '-0.02em'
@@ -238,7 +239,7 @@ export default function PechhulpPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="text-2xl sm:text-3xl text-white max-w-4xl mx-auto mb-8 font-medium"
+              className="text-lg sm:text-2xl md:text-3xl text-white max-w-4xl mx-auto mb-8 font-medium"
               style={{ textShadow: '0 2px 10px rgba(0,0,0,0.9)' }}
             >
               Wegenwacht staat <span className="text-blue-400 font-bold">dag en nacht</span> klaar.
@@ -302,7 +303,7 @@ export default function PechhulpPage() {
       </section>
 
       {/* Services Grid */}
-      <section className="py-20 relative">
+      <section className="py-12 sm:py-16 lg:py-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -313,7 +314,7 @@ export default function PechhulpPage() {
             <span className="inline-block px-4 py-2 rounded-full bg-blue-500/10 text-blue-400 text-sm font-semibold mb-6">
               ONZE DIENSTEN
             </span>
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
               Wat Doen Wij <span className="gradient-text">Voor Jou</span>?
             </h2>
           </motion.div>
@@ -345,7 +346,7 @@ export default function PechhulpPage() {
       </section>
 
       {/* Tarieven & Facturatie */}
-      <section className="py-20 relative">
+      <section className="py-12 sm:py-16 lg:py-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -356,7 +357,7 @@ export default function PechhulpPage() {
             <span className="inline-block px-4 py-2 rounded-full bg-blue-500/10 text-blue-400 text-sm font-semibold mb-6">
               TARIEVEN
             </span>
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
               Pechhulp <span className="gradient-text">Tarieven</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -439,7 +440,7 @@ export default function PechhulpPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 relative">
+      <section className="py-12 sm:py-16 lg:py-20 relative">
         <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-transparent to-cyan-600/20" />
         <motion.div
           initial={{ opacity: 0, y: 60 }}
@@ -448,7 +449,7 @@ export default function PechhulpPage() {
           className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
         >
           <div className="glass-card rounded-3xl p-8 sm:p-16 text-center">
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
               Staat Je Auto <span className="gradient-text">Stil</span>?
             </h2>
             <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
@@ -469,7 +470,7 @@ export default function PechhulpPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-16 border-t border-white/5">
+      <footer className="py-10 sm:py-16 border-t border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div className="md:col-span-2">
@@ -480,7 +481,7 @@ export default function PechhulpPage() {
                     alt="DirectAutoHulp"
                     width={800}
                     height={240}
-                    className="h-44 w-auto mb-6"
+                    className="h-24 sm:h-32 md:h-44 w-auto mb-6"
                   />
                 </div>
               </Link>
@@ -534,10 +535,12 @@ export default function PechhulpPage() {
         </div>
       </footer>
 
-      {/* Pechhulp Popup */}
+      {/* Pechhulp Popup - hidden on mobile */}
       <AnimatePresence>
         {showPopup && (
-          <PechhulpPopup onClose={() => setShowPopup(false)} />
+          <div className="hidden md:block">
+            <PechhulpPopup onClose={() => setShowPopup(false)} />
+          </div>
         )}
       </AnimatePresence>
 

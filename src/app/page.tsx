@@ -87,7 +87,7 @@ export default function Home() {
                 alt="DirectAutoHulp"
                 width={800}
                 height={240}
-                className="h-16 sm:h-20 md:h-32 w-auto"
+                className="h-12 sm:h-16 md:h-20 lg:h-32 w-auto"
               />
             </motion.div>
 
@@ -171,7 +171,8 @@ export default function Home() {
             src="https://images.unsplash.com/photo-1592198084033-aade902d1aae?w=1920&q=80"
             alt="Ferrari Purosangue"
             fill
-            className="object-cover"
+            className="object-cover object-center"
+            sizes="100vw"
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/75 to-black/90" />
@@ -184,12 +185,12 @@ export default function Home() {
         <motion.div
           animate={{ y: [0, -30, 0], rotate: [0, 5, 0] }}
           transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/4 right-20 w-64 h-64 bg-gradient-to-br from-red-600/20 to-transparent rounded-full blur-3xl"
+          className="absolute top-1/4 right-4 sm:right-20 w-32 sm:w-64 h-32 sm:h-64 bg-gradient-to-br from-red-600/20 to-transparent rounded-full blur-3xl"
         />
         <motion.div
           animate={{ y: [0, 30, 0], rotate: [0, -5, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-1/4 left-20 w-96 h-96 bg-gradient-to-br from-blue-600/10 to-transparent rounded-full blur-3xl"
+          className="absolute bottom-1/4 left-4 sm:left-20 w-48 sm:w-96 h-48 sm:h-96 bg-gradient-to-br from-blue-600/10 to-transparent rounded-full blur-3xl"
         />
 
         <motion.div
@@ -212,7 +213,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-5xl sm:text-7xl lg:text-8xl font-black mb-2 tracking-tight"
+              className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-2 tracking-tight"
               style={{ 
                 textShadow: '0 0 40px rgba(239,68,68,0.5), 0 4px 20px rgba(0,0,0,0.8)',
                 letterSpacing: '-0.02em'
@@ -225,7 +226,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-4xl sm:text-6xl lg:text-7xl font-black mb-8 tracking-tight"
+              className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-8 tracking-tight"
               style={{ 
                 textShadow: '0 0 60px rgba(245,158,11,0.6), 0 4px 30px rgba(0,0,0,0.9)',
                 letterSpacing: '-0.02em'
@@ -240,7 +241,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-2xl sm:text-3xl text-white max-w-4xl mx-auto mb-10 font-medium"
+              className="text-lg sm:text-2xl md:text-3xl text-white max-w-4xl mx-auto mb-10 font-medium"
               style={{ textShadow: '0 2px 10px rgba(0,0,0,0.9)' }}
             >
               <span className="text-red-400 font-bold">Transport</span> • 
@@ -319,7 +320,7 @@ export default function Home() {
       </section>
 
       {/* Services Section */}
-      <section id="diensten" className="py-32 relative">
+      <section id="diensten" className="py-16 sm:py-24 lg:py-32 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial="initial"
@@ -331,7 +332,7 @@ export default function Home() {
             <motion.span variants={fadeInUp} className="inline-block px-4 py-2 rounded-full bg-red-500/10 text-red-400 text-sm font-semibold mb-6">
               ONZE DIENSTEN
             </motion.span>
-            <motion.h2 variants={fadeInUp} className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
               Alles Voor <span className="gradient-text">Jouw Auto</span>
             </motion.h2>
             <motion.p variants={fadeInUp} className="text-xl text-gray-600 max-w-3xl mx-auto">
@@ -449,7 +450,7 @@ export default function Home() {
       </section>
 
       {/* Why Choose Us */}
-      <section id="over-ons" className="py-32 relative overflow-hidden">
+      <section id="over-ons" className="py-16 sm:py-24 lg:py-32 relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-red-900/5 to-transparent" />
         
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -463,7 +464,7 @@ export default function Home() {
               <span className="inline-block px-4 py-2 rounded-full bg-red-500/10 text-red-400 text-sm font-semibold mb-6">
                 WAAROM WIJ?
               </span>
-              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
                 Uw <span className="gradient-text">Betrouwbare</span> Autopartner
               </h2>
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
@@ -541,7 +542,7 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section id="hoe-werkt-het" className="py-32 relative">
+      <section id="hoe-werkt-het" className="py-16 sm:py-24 lg:py-32 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -552,7 +553,7 @@ export default function Home() {
             <span className="inline-block px-4 py-2 rounded-full bg-red-500/10 text-red-400 text-sm font-semibold mb-6">
               HOE HET WERKT
             </span>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
               Simpel, Snel & <span className="gradient-text">Transparant</span>
             </h2>
           </motion.div>
@@ -588,7 +589,7 @@ export default function Home() {
       </section>
 
       {/* Contact Form Section */}
-      <section id="contact" className="py-32 relative overflow-hidden bg-gradient-to-br from-red-600/10 via-transparent to-blue-600/10">
+      <section id="contact" className="py-16 sm:py-24 lg:py-32 relative overflow-hidden bg-gradient-to-br from-red-600/10 via-transparent to-blue-600/10">
         <motion.div
           initial={{ opacity: 0, y: 60 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -598,7 +599,7 @@ export default function Home() {
         >
           <div className="glass-card rounded-3xl p-8 sm:p-12">
             <div className="text-center mb-10">
-              <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
                 Neem <span className="gradient-text">Contact</span> Op
               </h2>
               <p className="text-xl text-gray-600">
@@ -684,7 +685,7 @@ export default function Home() {
             </form>
 
             <div className="mt-10 pt-8 border-t border-gray-200">
-              <div className="grid sm:grid-cols-4 gap-6 text-center">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
                 <div className="flex flex-col items-center gap-2">
                   <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
                     <Phone className="w-5 h-5 text-red-500" />
@@ -720,7 +721,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="py-16 border-t border-white/5">
+      <footer className="py-10 sm:py-16 border-t border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div className="md:col-span-2">
@@ -730,7 +731,7 @@ export default function Home() {
                   alt="DirectAutoHulp"
                   width={800}
                   height={240}
-                  className="h-44 w-auto mb-6"
+                  className="h-24 sm:h-32 md:h-44 w-auto mb-6"
                 />
               </Link>
               <p className="text-gray-600 mb-6 max-w-md">

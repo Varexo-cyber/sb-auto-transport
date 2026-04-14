@@ -102,7 +102,7 @@ export default function AutoTransportPage() {
                 alt="DirectAutoHulp"
                 width={800}
                 height={240}
-                className="h-16 sm:h-20 md:h-32 w-auto"
+                className="h-12 sm:h-16 md:h-20 lg:h-32 w-auto"
               />
               </motion.div>
             </Link>
@@ -165,7 +165,8 @@ export default function AutoTransportPage() {
             src="https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=1920&q=80"
             alt="Car transport truck"
             fill
-            className="object-cover"
+            className="object-cover object-center"
+            sizes="100vw"
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/90" />
@@ -175,7 +176,7 @@ export default function AutoTransportPage() {
         <motion.div
           animate={{ y: [0, -20, 0], rotate: [0, 2, 0] }}
           transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/3 right-20 w-96 h-96 bg-gradient-to-br from-red-600/30 to-transparent rounded-full blur-3xl"
+          className="absolute top-1/3 right-4 sm:right-20 w-48 sm:w-96 h-48 sm:h-96 bg-gradient-to-br from-red-600/30 to-transparent rounded-full blur-3xl"
         />
 
         <motion.div
@@ -211,7 +212,7 @@ export default function AutoTransportPage() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-5xl sm:text-7xl lg:text-8xl font-black mb-2 tracking-tight"
+              className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-2 tracking-tight"
               style={{ 
                 textShadow: '0 0 40px rgba(239,68,68,0.5), 0 4px 20px rgba(0,0,0,0.8)',
                 letterSpacing: '-0.02em'
@@ -224,7 +225,7 @@ export default function AutoTransportPage() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-4xl sm:text-6xl lg:text-7xl font-black mb-8 tracking-tight"
+              className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-8 tracking-tight"
               style={{ 
                 textShadow: '0 0 60px rgba(245,158,11,0.6), 0 4px 30px rgba(0,0,0,0.9)',
                 letterSpacing: '-0.02em'
@@ -239,7 +240,7 @@ export default function AutoTransportPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.5 }}
-              className="text-2xl sm:text-3xl text-white max-w-4xl mx-auto mb-8 font-medium"
+              className="text-lg sm:text-2xl md:text-3xl text-white max-w-4xl mx-auto mb-8 font-medium"
               style={{ textShadow: '0 2px 10px rgba(0,0,0,0.9)' }}
             >
               Snel, veilig en <span className="text-red-400 font-bold">100% verzekerd</span>.
@@ -270,7 +271,7 @@ export default function AutoTransportPage() {
       </section>
 
       {/* Features Grid */}
-      <section className="py-20 relative">
+      <section className="py-12 sm:py-16 lg:py-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -299,7 +300,7 @@ export default function AutoTransportPage() {
       </section>
 
       {/* Pricing Cards */}
-      <section className="py-20 relative">
+      <section className="py-12 sm:py-16 lg:py-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -310,7 +311,7 @@ export default function AutoTransportPage() {
             <span className="inline-block px-4 py-2 rounded-full bg-red-500/10 text-red-400 text-sm font-semibold mb-6">
               TRANSPARANTE PRIJZEN
             </span>
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
               Transport <span className="gradient-text">Tarief</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -408,7 +409,7 @@ export default function AutoTransportPage() {
       </section>
 
       {/* How It Works */}
-      <section className="py-20 relative">
+      <section className="py-12 sm:py-16 lg:py-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -416,7 +417,7 @@ export default function AutoTransportPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
               Hoe Werkt <span className="gradient-text">Auto Transport</span>?
             </h2>
           </motion.div>
@@ -451,7 +452,7 @@ export default function AutoTransportPage() {
       </section>
 
       {/* Waarom Ons Kiezen */}
-      <section className="py-20 relative">
+      <section className="py-12 sm:py-16 lg:py-20 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -459,7 +460,7 @@ export default function AutoTransportPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
               Waarom <span className="gradient-text">Ons Kiezen</span>?
             </h2>
           </motion.div>
@@ -502,7 +503,7 @@ export default function AutoTransportPage() {
       </section>
 
       {/* FAQ */}
-      <section className="py-20 relative">
+      <section className="py-12 sm:py-16 lg:py-20 relative">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -510,7 +511,7 @@ export default function AutoTransportPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
               Veelgestelde <span className="gradient-text">Vragen</span>
             </h2>
           </motion.div>
@@ -540,7 +541,7 @@ export default function AutoTransportPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 relative">
+      <section className="py-12 sm:py-16 lg:py-20 relative">
         <div className="absolute inset-0 bg-gradient-to-br from-red-600/20 via-transparent to-orange-600/20" />
         <motion.div
           initial={{ opacity: 0, y: 60 }}
@@ -549,7 +550,7 @@ export default function AutoTransportPage() {
           className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
         >
           <div className="glass-card rounded-3xl p-8 sm:p-16 text-center">
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
               Klaar om Je Auto te <span className="gradient-text">Transport</span>?
             </h2>
             <p className="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
@@ -570,7 +571,7 @@ export default function AutoTransportPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-16 border-t border-white/5">
+      <footer className="py-10 sm:py-16 border-t border-white/5">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div className="md:col-span-2">
@@ -581,7 +582,7 @@ export default function AutoTransportPage() {
                     alt="DirectAutoHulp"
                     width={800}
                     height={240}
-                    className="h-44 w-auto mb-6"
+                    className="h-24 sm:h-32 md:h-44 w-auto mb-6"
                   />
                 </div>
               </Link>
@@ -639,10 +640,12 @@ export default function AutoTransportPage() {
         </div>
       </footer>
 
-      {/* Transport Popup */}
+      {/* Transport Popup - hidden on mobile */}
       <AnimatePresence>
         {showPopup && (
-          <TransportPopup onClose={() => setShowPopup(false)} />
+          <div className="hidden md:block">
+            <TransportPopup onClose={() => setShowPopup(false)} />
+          </div>
         )}
       </AnimatePresence>
 
