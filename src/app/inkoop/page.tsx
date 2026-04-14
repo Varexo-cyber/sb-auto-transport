@@ -368,7 +368,7 @@ function VehicleInfoPopup({
         ) : vehicleData ? (
           <div>
             {/* Vehicle Image - NOG GROTER */}
-            <div className="relative w-full h-80 mb-6 rounded-2xl overflow-hidden bg-gray-100 shadow-lg">
+            <div className="relative w-full h-48 sm:h-64 md:h-80 mb-6 rounded-2xl overflow-hidden bg-gray-100 shadow-lg">
               {vehicleImage ? (
                 <img 
                   src={vehicleImage} 
@@ -547,7 +547,7 @@ export default function InkoopPage() {
                 alt="DirectAutoHulp"
                 width={800}
                 height={240}
-                className="h-16 sm:h-20 md:h-32 w-auto"
+                className="h-12 sm:h-16 md:h-20 lg:h-32 w-auto"
               />
               </motion.div>
             </Link>
@@ -610,7 +610,8 @@ export default function InkoopPage() {
             src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1920&q=80"
             alt="Luxury car garage"
             fill
-            className="object-cover"
+            className="object-cover object-center"
+            sizes="100vw"
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/90" />
@@ -622,7 +623,7 @@ export default function InkoopPage() {
           initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
-          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20"
+          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20"
         >
           {/* Back Link */}
           <Link href="/#diensten" className="block mb-4">
@@ -653,7 +654,7 @@ export default function InkoopPage() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3 }}
-              className="text-5xl sm:text-7xl lg:text-8xl font-black mb-2 tracking-tight"
+              className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-2 tracking-tight"
               style={{ 
                 textShadow: '0 0 40px rgba(16,185,129,0.5), 0 4px 20px rgba(0,0,0,0.8)',
                 letterSpacing: '-0.02em'
@@ -666,7 +667,7 @@ export default function InkoopPage() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
-              className="text-4xl sm:text-6xl lg:text-7xl font-black mb-8 tracking-tight"
+              className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-8 tracking-tight"
               style={{ 
                 textShadow: '0 0 60px rgba(245,158,11,0.6), 0 4px 30px rgba(0,0,0,0.9)',
                 letterSpacing: '-0.02em'
@@ -681,7 +682,7 @@ export default function InkoopPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5 }}
-              className="text-2xl sm:text-3xl text-white max-w-4xl mx-auto mb-8 font-medium"
+              className="text-lg sm:text-2xl md:text-3xl text-white max-w-4xl mx-auto mb-8 font-medium"
               style={{ textShadow: '0 2px 10px rgba(0,0,0,0.9)' }}
             >
               Binnen <span className="text-green-400 font-bold">1 minuut</span> je waarde bekend.
@@ -751,7 +752,7 @@ export default function InkoopPage() {
       </section>
 
       {/* WHY SELL TO US - COMMERCIAL SECTION */}
-      <section className="py-20 bg-gradient-to-br from-gray-50 to-white">
+      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-gray-50 to-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -762,7 +763,7 @@ export default function InkoopPage() {
             <span className="inline-block px-4 py-2 rounded-full bg-green-100 text-green-600 text-sm font-bold mb-4">
               WAAROM WIJ?
             </span>
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
               Waarom je Auto aan <span className="gradient-text">Ons Verkopen</span>?
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -808,7 +809,7 @@ export default function InkoopPage() {
       </section>
 
       {/* HOW IT WORKS - STEP BY STEP */}
-      <section className="py-20 bg-gradient-to-br from-green-600 to-emerald-700 text-white">
+      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-green-600 to-emerald-700 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -816,7 +817,7 @@ export default function InkoopPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
               Zo Verkoop je je Auto
             </h2>
             <p className="text-xl text-white/80">
@@ -857,7 +858,7 @@ export default function InkoopPage() {
       </section>
 
       {/* WHAT WE BUY */}
-      <section className="py-20 bg-white">
+      <section className="py-12 sm:py-16 lg:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -868,7 +869,7 @@ export default function InkoopPage() {
             <span className="inline-block px-4 py-2 rounded-full bg-red-100 text-red-600 text-sm font-bold mb-4">
               WE KOPEN ALLES!
             </span>
-            <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
               Welke Auto&apos;s <span className="gradient-text">Kopen Wij?</span>
             </h2>
             <p className="text-xl text-gray-600 max-w-2xl mx-auto">
@@ -914,7 +915,7 @@ export default function InkoopPage() {
       </section>
 
       {/* WAAROM BIJ ONS VERKOPEN */}
-      <section className="py-20 bg-gradient-to-br from-gray-900 to-black text-white">
+      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-gray-900 to-black text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -922,7 +923,7 @@ export default function InkoopPage() {
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-4xl sm:text-5xl font-bold mb-4">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
               Waarom Bij Ons <span className="gradient-text">Verkopen</span>?
             </h2>
             <p className="text-xl text-gray-400">
@@ -968,14 +969,14 @@ export default function InkoopPage() {
       </section>
 
       {/* FINAL CTA */}
-      <section className="py-20 bg-gradient-to-r from-green-600 to-emerald-600">
+      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-r from-green-600 to-emerald-600">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
               Klaar om je Auto te Verkopen?
             </h2>
             <p className="text-xl text-white/80 mb-8">
@@ -1003,7 +1004,7 @@ export default function InkoopPage() {
       </section>
 
       {/* Footer */}
-      <footer className="py-16 bg-gray-900 text-white">
+      <footer className="py-10 sm:py-16 bg-gray-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div className="md:col-span-2">
@@ -1014,7 +1015,7 @@ export default function InkoopPage() {
                     alt="DirectAutoHulp"
                     width={800}
                     height={240}
-                    className="h-44 w-auto mb-6"
+                    className="h-24 sm:h-32 md:h-44 w-auto mb-6"
                   />
                 </div>
               </Link>
@@ -1068,10 +1069,12 @@ export default function InkoopPage() {
         </div>
       </footer>
 
-      {/* Sell Car Popup */}
+      {/* Sell Car Popup - hidden on mobile */}
       <AnimatePresence>
         {showPopup && (
-          <SellCarPopup onClose={() => setShowPopup(false)} />
+          <div className="hidden md:block">
+            <SellCarPopup onClose={() => setShowPopup(false)} />
+          </div>
         )}
       </AnimatePresence>
 
