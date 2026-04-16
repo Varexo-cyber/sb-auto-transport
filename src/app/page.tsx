@@ -164,7 +164,7 @@ export default function Home() {
       </motion.nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0">
           <Image
@@ -175,7 +175,8 @@ export default function Home() {
             sizes="100vw"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/75 to-black/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
         
         <div className="absolute inset-0 hero-gradient" />
@@ -195,7 +196,7 @@ export default function Home() {
 
         <motion.div
           style={{ y: heroY, opacity: heroOpacity }}
-          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32"
+          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-28 lg:pt-32"
         >
           <div className="text-center">
             <motion.div
@@ -279,7 +280,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, delay: 0.8 }}
-              className="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto"
+              className="mt-10 sm:mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 max-w-4xl mx-auto"
             >
               {[
                 { value: "24/7", label: "Bereikbaar" },
@@ -292,7 +293,7 @@ export default function Home() {
                   initial={{ opacity: 0, scale: 0.8 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: 1 + i * 0.1 }}
-                  className="rounded-2xl p-6 text-center bg-white/10 backdrop-blur-md border border-white/15"
+                  className="rounded-2xl p-3 sm:p-6 text-center bg-white/10 backdrop-blur-md border border-white/15"
                 >
                   <div className="text-3xl sm:text-4xl font-bold text-white mb-2">{stat.value}</div>
                   <div className="text-sm text-white/70">{stat.label}</div>

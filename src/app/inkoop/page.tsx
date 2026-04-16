@@ -603,7 +603,7 @@ export default function InkoopPage() {
       </motion.nav>
 
       {/* HERO SECTION - NEW COMMERCIAL DESIGN */}
-      <section id="kenteken-check" className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+      <section id="kenteken-check" className="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20">
         {/* Background Image - Clean car showroom */}
         <div className="absolute inset-0">
           <Image
@@ -614,7 +614,8 @@ export default function InkoopPage() {
             sizes="100vw"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
         
         <div className="absolute inset-0 grid-pattern opacity-20" />
