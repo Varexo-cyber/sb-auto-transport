@@ -158,7 +158,7 @@ export default function PechhulpPage() {
       </motion.nav>
 
       {/* Hero Section */}
-      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden pt-20">
+      <section className="relative min-h-[80vh] sm:min-h-[70vh] flex items-center justify-center overflow-hidden pt-16 sm:pt-20">
         <div className="absolute inset-0">
           <Image
             src="https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=1920&q=80"
@@ -168,7 +168,8 @@ export default function PechhulpPage() {
             sizes="100vw"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/90" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
         </div>
         <div className="absolute inset-0 grid-pattern opacity-50" />
         
