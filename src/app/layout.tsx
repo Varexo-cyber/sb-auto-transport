@@ -105,6 +105,9 @@ const jsonLd = {
   description: "Professioneel auto transport, inkoop en 24/7 pechhulp door heel Nederland en Europa. Auto verkopen tegen de beste prijs met directe uitbetaling.",
   address: {
     "@type": "PostalAddress",
+    streetAddress: "Coolsingel 139",
+    postalCode: "3012 AG",
+    addressLocality: "Rotterdam",
     addressCountry: "NL",
   },
   areaServed: [
