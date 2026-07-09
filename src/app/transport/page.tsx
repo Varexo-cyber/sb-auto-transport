@@ -614,11 +614,11 @@ export default function AutoTransportPage() {
                 </li>
                 <li className="flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-red-400" />
-                  <a href="https://maps.google.com/?q=Leyweg+809+2545+GS+Den+Haag" target="_blank" rel="noopener noreferrer" className="hover:text-red-500 transition-colors">Leyweg 809, 2545 GS Den Haag</a>
+                  <a href="https://maps.google.com/?q=Coolsingel+139+3012+AG+Rotterdam" target="_blank" rel="noopener noreferrer" className="hover:text-red-500 transition-colors">Coolsingel 139, 3012 AG Rotterdam</a>
                 </li>
                 <li className="flex items-center gap-2">
                   <CheckCircle className="w-4 h-4 text-green-400" />
-                  <span>KVK: 98448803</span>
+                  <span>KVK: 87769743</span>
                 </li>
               </ul>
             </div>
@@ -635,7 +635,7 @@ export default function AutoTransportPage() {
               </a>
             </p>
             <p className="text-gray-500 text-sm">
-              BTW: NL005332380B82 | KVK: 98448803
+              BTW: NL005332380B82 | KVK: 87769743
             </p>
           </div>
         </div>
