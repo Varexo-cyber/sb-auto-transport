@@ -6,12 +6,8 @@ import {
   SiteFooter,
   WhatsAppFloat,
   ContactButtons,
-  PHONE_TEL,
-  PHONE_DISPLAY,
-  EMAIL,
-  ADDRESS,
-  MAPS_URL,
 } from "@/components/site";
+import { PHONE_TEL, PHONE_DISPLAY, EMAIL, ADDRESS, MAPS_URL } from "@/components/contact";
 
 const services = [
   {
