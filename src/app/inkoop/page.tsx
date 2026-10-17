@@ -1,33 +1,12 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import {
-  Phone,
-  MapPin,
-  Mail,
-  Shield,
-  CheckCircle,
-  ArrowRight,
-  ChevronLeft,
-  Star,
-  Car,
-  Euro,
-  BadgeCheck,
-  HandCoins,
-  FileText,
-  Menu,
-  X,
-  Search,
-  Sparkles,
-  AlertCircle,
-  Clock,
-  Wallet,
-  ArrowUpRight,
-  TrendingUp,
-} from "lucide-react";
+import { Car, X, Search, AlertCircle, Check } from "lucide-react";
 import { useState, useEffect } from "react";
+import { SiteHeader, SiteFooter, WhatsAppFloat, ContactButtons } from "@/components/site";
+
+const WA_TEXT = "Hallo, ik wil mijn auto verkopen. Kenteken: ";
 
 // RDW API Types - UITGEBREID met alle beschikbare velden
 interface RDWVehicleData {
@@ -140,141 +119,49 @@ async function fetchRDWVehicleData(kenteken: string): Promise<{ vehicle: RDWVehi
   }
 }
 
-// Sell Car Popup Component
-function SellCarPopup({ onClose }: { onClose: () => void }) {
-  return (
-    <motion.div
-      initial={{ opacity: 0, scale: 0.9, y: 50 }}
-      animate={{ opacity: 1, scale: 1, y: 0 }}
-      exit={{ opacity: 0, scale: 0.9, y: 50 }}
-      className="fixed bottom-8 right-8 z-50 max-w-sm"
-    >
-      <div className="bg-gradient-to-br from-green-600 to-emerald-600 rounded-2xl p-6 text-white shadow-2xl border border-white/20">
-        <button
-          onClick={onClose}
-          className="absolute top-3 right-3 w-6 h-6 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30 transition-colors"
-        >
-          <X className="w-4 h-4" />
-        </button>
-        
-        <div className="flex items-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center">
-            <Car className="w-5 h-5" />
-          </div>
-          <span className="font-bold text-lg">Wil je je auto verkopen?</span>
-        </div>
-        
-        <p className="text-white/90 mb-4 text-sm">
-          Ontdek binnen 1 minuut hoeveel je auto waard is! Direct bod, geen gedoe.
-        </p>
-        
-        <div className="flex gap-2">
-          <button
-            onClick={() => {
-              onClose();
-              document.getElementById('kenteken-check')?.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="flex-1 py-3 bg-white text-green-700 rounded-lg font-semibold text-sm hover:bg-gray-100 transition-colors flex items-center justify-center gap-2"
-          >
-            Check Waarde
-            <ArrowUpRight className="w-4 h-4" />
-          </button>
-        </div>
-      </div>
-    </motion.div>
-  );
-}
-
-// License Plate Component - REALISTIC DUTCH STYLE
 function LicensePlateInput({ onSubmit }: { onSubmit: (plate: string) => void }) {
   const [plate, setPlate] = useState("");
-  const [isValid, setIsValid] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.toUpperCase().replace(/[^A-Z0-9\-]/g, "");
-    setPlate(value);
-    setIsValid(value.replace(/-/g, "").length >= 6);
-  };
-
-  const handleSubmit = () => {
-    if (isValid) {
-      onSubmit(plate);
-    }
-  };
+  const isValid = plate.replace(/-/g, "").length >= 6;
 
   return (
-    <div className="w-full max-w-md mx-auto">
-      <div className="relative flex flex-col items-center">
-        {/* Realistic Dutch License Plate */}
-        <div className="relative flex items-stretch shadow-2xl rounded-lg overflow-hidden border-2 border-gray-400" style={{ boxShadow: '0 10px 40px rgba(0,0,0,0.3)' }}>
-          {/* EU Blue Strip */}
-          <div className="w-12 bg-gradient-to-b from-blue-600 to-blue-800 flex flex-col items-center justify-center py-2 border-r-2 border-gray-400">
-            <span className="text-[10px] font-bold text-yellow-400 tracking-tight">NL</span>
-            <div className="w-6 h-4 mt-1">
-              <svg viewBox="0 0 27 18" className="w-full h-full">
-                <circle cx="13.5" cy="9" r="8" fill="none" stroke="#FFD700" strokeWidth="1"/>
-                {[...Array(12)].map((_, i) => {
-                  const angle = (i * 30 - 90) * (Math.PI / 180);
-                  const x = parseFloat((13.5 + 6.5 * Math.cos(angle)).toFixed(2));
-                  const y = parseFloat((9 + 6.5 * Math.sin(angle)).toFixed(2));
-                  return <circle key={i} cx={x} cy={y} r="0.8" fill="#FFD700"/>;
-                })}
-              </svg>
-            </div>
-          </div>
-          
-          {/* Yellow Plate Area */}
-          <div className="bg-yellow-300 flex items-center justify-center px-6 py-3" style={{ backgroundColor: '#FFCC00' }}>
-            <input
-              type="text"
-              value={plate}
-              onChange={handleChange}
-              placeholder="XX-XXX-X"
-              maxLength={8}
-              className="w-48 text-3xl font-bold tracking-[0.15em] text-black uppercase bg-transparent border-none outline-none text-center placeholder-gray-500"
-              style={{ 
-                fontFamily: 'Arial, Helvetica, sans-serif',
-                textShadow: '0 1px 1px rgba(255,255,255,0.5)'
-              }}
-            />
-          </div>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (isValid) onSubmit(plate);
+      }}
+      className="w-full max-w-md"
+    >
+      <label htmlFor="kenteken" className="block text-sm font-medium text-stone-300">
+        Uw kenteken
+      </label>
+      <div className="mt-2 flex flex-col gap-3 sm:flex-row">
+        <div className="flex flex-1 overflow-hidden rounded-md border-2 border-stone-900 bg-[#FFCC00]">
+          <span className="flex w-10 items-end justify-center bg-[#003DA5] pb-1.5 text-xs font-bold text-white">NL</span>
+          <input
+            id="kenteken"
+            type="text"
+            value={plate}
+            onChange={(e) => setPlate(e.target.value.toUpperCase().replace(/[^A-Z0-9-]/g, ""))}
+            placeholder="AB-123-C"
+            maxLength={8}
+            autoComplete="off"
+            className="w-full bg-transparent px-3 py-3 text-center text-2xl font-bold uppercase tracking-widest text-black placeholder-black/30 outline-none"
+          />
         </div>
-        
-        {/* Submit Button */}
-        <motion.button
-          whileHover={{ scale: isValid ? 1.02 : 1 }}
-          whileTap={{ scale: isValid ? 0.98 : 1 }}
-          onClick={handleSubmit}
+        <button
+          type="submit"
           disabled={!isValid}
-          className={`mt-6 px-10 py-4 rounded-full font-bold text-lg flex items-center justify-center gap-3 transition-all shadow-lg ${
-            isValid 
-              ? "bg-gradient-to-r from-green-600 to-emerald-500 text-white hover:shadow-xl hover:shadow-green-500/30 cursor-pointer" 
-              : "bg-gray-400 text-gray-200 cursor-not-allowed"
-          }`}
+          className="inline-flex items-center justify-center gap-2 rounded-md bg-orange-600 px-6 py-3 font-semibold text-white hover:bg-orange-700 disabled:cursor-not-allowed disabled:bg-stone-600 disabled:text-stone-300"
         >
-          <Search className="w-5 h-5" />
-          Check Waarde
-          <ArrowRight className="w-5 h-5" />
-        </motion.button>
-
-        {!isValid && plate.length > 0 && (
-          <p className="text-red-300 text-sm mt-3 text-center">
-            Voer een geldig kenteken in (minimaal 6 tekens)
-          </p>
-        )}
+          <Search className="h-5 w-5" />
+          Opzoeken
+        </button>
       </div>
-    </div>
+    </form>
   );
 }
 
-// Vehicle Info Popup Component - WITH REAL RDW DATA + IMAGE
-function VehicleInfoPopup({ 
-  plate, 
-  onClose 
-}: { 
-  plate: string; 
-  onClose: () => void;
-}) {
+function VehicleInfoPopup({ plate, onClose }: { plate: string; onClose: () => void }) {
   const [loading, setLoading] = useState(true);
   const [vehicleData, setVehicleData] = useState<RDWVehicleData | null>(null);
   const [vehicleImage, setVehicleImage] = useState<string | null>(null);
@@ -285,32 +172,26 @@ function VehicleInfoPopup({
       try {
         setLoading(true);
         const result = await fetchRDWVehicleData(plate);
-        
         if (result.vehicle) {
           setVehicleData(result.vehicle);
           setVehicleImage(result.image);
         } else {
-          setError("Geen voertuiggegevens gevonden voor dit kenteken");
+          setError("We vinden geen auto bij dit kenteken. Controleer of u het goed heeft ingevuld.");
         }
-      } catch (err) {
-        setError("Er ging iets mis bij het ophalen van de gegevens");
+      } catch {
+        setError("Het opzoeken is niet gelukt. Probeer het nog eens of stuur ons uw kenteken via WhatsApp.");
       } finally {
         setLoading(false);
       }
     };
-
     fetchData();
   }, [plate]);
 
   const formatDate = (dateStr: string) => {
     if (!dateStr || dateStr.length !== 8) return "Onbekend";
-    const year = dateStr.substring(0, 4);
-    const month = dateStr.substring(4, 6);
-    const day = dateStr.substring(6, 8);
-    return `${day}-${month}-${year}`;
+    return `${dateStr.substring(6, 8)}-${dateStr.substring(4, 6)}-${dateStr.substring(0, 4)}`;
   };
 
-  // Get brandstof description
   const getBrandstof = () => {
     if (vehicleData?.brandstof_omschrijving && vehicleData.brandstof_omschrijving !== "Niet geregistreerd") {
       return vehicleData.brandstof_omschrijving;
@@ -321,785 +202,227 @@ function VehicleInfoPopup({
     return "Onbekend";
   };
 
+  const details: [string, string][] = vehicleData
+    ? [
+        ["Voertuigsoort", vehicleData.voertuigsoort || "Onbekend"],
+        ["Kleur", vehicleData.eerste_kleur || "Onbekend"],
+        ["Brandstof", getBrandstof()],
+        [
+          "Vermogen",
+          vehicleData.nettomaximumvermogen
+            ? `${Math.round(parseInt(vehicleData.nettomaximumvermogen) / 1.36)} pk`
+            : "Onbekend",
+        ],
+        ["Cilinderinhoud", vehicleData.cilinderinhoud ? `${vehicleData.cilinderinhoud} cc` : "Onbekend"],
+        ["Gewicht", vehicleData.massa_rijklaar ? `${vehicleData.massa_rijklaar} kg` : "Onbekend"],
+        ["Deuren", vehicleData.aantal_deuren || "Onbekend"],
+        ["Zitplaatsen", vehicleData.aantal_zitplaatsen || "Onbekend"],
+        ["Eerste toelating", formatDate(vehicleData.datum_eerste_toelating)],
+        ...(vehicleData.apk_vervaldatum
+          ? ([["APK geldig tot", formatDate(vehicleData.apk_vervaldatum)]] as [string, string][])
+          : []),
+      ]
+    : [];
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
-    >
-      <motion.div
-        initial={{ opacity: 0, scale: 0.9, y: 50 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: 50 }}
-        className="glass-card rounded-3xl p-6 max-w-3xl w-full max-h-[95vh] overflow-y-auto relative"
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4" onClick={onClose}>
+      <div
+        className="relative max-h-[95vh] w-full max-w-2xl overflow-y-auto rounded-lg bg-white p-6 shadow-xl"
+        onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-900 hover:bg-gray-200 transition-colors z-10"
+          aria-label="Sluiten"
+          className="absolute right-4 top-4 z-10 flex h-9 w-9 items-center justify-center rounded-full bg-stone-100 text-stone-900 hover:bg-stone-200"
         >
-          <X className="w-5 h-5" />
+          <X className="h-5 w-5" />
         </button>
 
         {loading ? (
           <div className="py-12 text-center">
-            <motion.div
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-              className="w-16 h-16 border-4 border-green-500 border-t-transparent rounded-full mx-auto mb-4"
-            />
-            <p className="text-gray-600 text-lg">RDW gegevens ophalen voor {plate}...</p>
-            <p className="text-gray-400 text-sm mt-2">Even geduld a.u.b.</p>
+            <div className="mx-auto mb-4 h-10 w-10 animate-spin rounded-full border-4 border-orange-600 border-t-transparent" />
+            <p className="text-stone-600">Gegevens van {plate} opzoeken bij de RDW…</p>
           </div>
         ) : error ? (
-          <div className="py-12 text-center">
-            <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <AlertCircle className="w-8 h-8 text-red-500" />
-            </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-2">Oeps!</h3>
-            <p className="text-gray-600 mb-4">{error}</p>
+          <div className="py-10 text-center">
+            <AlertCircle className="mx-auto h-10 w-10 text-orange-600" />
+            <p className="mx-auto mt-4 max-w-sm text-stone-700">{error}</p>
             <button
               onClick={onClose}
-              className="px-6 py-3 bg-gray-200 rounded-full text-gray-900 font-semibold hover:bg-gray-300 transition-all"
+              className="mt-6 rounded-md bg-stone-100 px-6 py-2.5 font-semibold text-stone-900 hover:bg-stone-200"
             >
               Sluiten
             </button>
           </div>
         ) : vehicleData ? (
           <div>
-            {/* Vehicle Image - NOG GROTER */}
-            <div className="relative w-full h-48 sm:h-64 md:h-80 mb-6 rounded-2xl overflow-hidden bg-gray-100 shadow-lg">
+            <div className="relative mb-6 h-48 w-full overflow-hidden rounded-md bg-stone-100 sm:h-64">
               {vehicleImage ? (
-                <img 
-                  src={vehicleImage} 
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={vehicleImage}
                   alt={`${vehicleData.merk} ${vehicleData.handelsbenaming}`}
-                  className="w-full h-full object-cover"
+                  className="h-full w-full object-cover"
                   onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
+                    (e.target as HTMLImageElement).style.display = "none";
                   }}
                 />
               ) : (
-                <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-blue-100 to-cyan-100">
-                  <Car className="w-24 h-24 text-blue-400" />
+                <div className="flex h-full w-full items-center justify-center">
+                  <Car className="h-16 w-16 text-stone-300" />
                 </div>
               )}
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent p-5">
-                <h2 className="text-3xl font-bold text-white mb-1 drop-shadow-lg">
-                  {vehicleData.merk} {vehicleData.handelsbenaming}
-                </h2>
-                <p className="text-white text-lg font-medium drop-shadow-md">Kenteken: {plate.toUpperCase()}</p>
-              </div>
             </div>
 
-            {/* Extended Vehicle Details Grid */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
-              <div className="bg-gray-50 rounded-xl p-3">
-                <p className="text-xs text-gray-500 mb-1">Voertuigsoort</p>
-                <p className="font-semibold text-gray-900 text-sm">{vehicleData.voertuigsoort || "Onbekend"}</p>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-3">
-                <p className="text-xs text-gray-500 mb-1">Kleur</p>
-                <p className="font-semibold text-gray-900 text-sm">{vehicleData.eerste_kleur || "Onbekend"}</p>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-3">
-                <p className="text-xs text-gray-500 mb-1">Aantal deuren</p>
-                <p className="font-semibold text-gray-900 text-sm">{vehicleData.aantal_deuren || "Onbekend"}</p>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-3">
-                <p className="text-xs text-gray-500 mb-1">Zitplaatsen</p>
-                <p className="font-semibold text-gray-900 text-sm">{vehicleData.aantal_zitplaatsen || "Onbekend"}</p>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-3">
-                <p className="text-xs text-gray-500 mb-1">Brandstof</p>
-                <p className="font-semibold text-gray-900 text-sm">{getBrandstof()}</p>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-3">
-                <p className="text-xs text-gray-500 mb-1">Vermogen</p>
-                <p className="font-semibold text-gray-900 text-sm">
-                  {vehicleData.nettomaximumvermogen ? `${Math.round(parseInt(vehicleData.nettomaximumvermogen) / 1.36)} pk` : "Onbekend"}
-                </p>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-3">
-                <p className="text-xs text-gray-500 mb-1">Cilinders</p>
-                <p className="font-semibold text-gray-900 text-sm">{vehicleData.aantal_cilinders || "Onbekend"}</p>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-3">
-                <p className="text-xs text-gray-500 mb-1">Cilinderinhoud</p>
-                <p className="font-semibold text-gray-900 text-sm">{vehicleData.cilinderinhoud ? `${vehicleData.cilinderinhoud} cc` : "Onbekend"}</p>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-3">
-                <p className="text-xs text-gray-500 mb-1">Gewicht</p>
-                <p className="font-semibold text-gray-900 text-sm">{vehicleData.massa_rijklaar ? `${vehicleData.massa_rijklaar} kg` : "Onbekend"}</p>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-3">
-                <p className="text-xs text-gray-500 mb-1">Lengte</p>
-                <p className="font-semibold text-gray-900 text-sm">{vehicleData.lengte ? `${vehicleData.lengte} cm` : "Onbekend"}</p>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-3">
-                <p className="text-xs text-gray-500 mb-1">Breedte</p>
-                <p className="font-semibold text-gray-900 text-sm">{vehicleData.breedte ? `${vehicleData.breedte} cm` : "Onbekend"}</p>
-              </div>
-              <div className="bg-gray-50 rounded-xl p-3">
-                <p className="text-xs text-gray-500 mb-1">Eerste toelating</p>
-                <p className="font-semibold text-gray-900 text-sm">{formatDate(vehicleData.datum_eerste_toelating)}</p>
-              </div>
-              {vehicleData.apk_vervaldatum && (
-                <div className="bg-gray-50 rounded-xl p-3">
-                  <p className="text-xs text-gray-500 mb-1">APK vervaldatum</p>
-                  <p className="font-semibold text-gray-900 text-sm">{formatDate(vehicleData.apk_vervaldatum)}</p>
-                </div>
-              )}
-              {vehicleData.zuinigheidsclassificatie && vehicleData.zuinigheidsclassificatie !== "Niet geregistreerd" && (
-                <div className="bg-gray-50 rounded-xl p-3">
-                  <p className="text-xs text-gray-500 mb-1">Zuinigheidslabel</p>
-                  <p className="font-semibold text-gray-900 text-sm">{vehicleData.zuinigheidsclassificatie}</p>
-                </div>
-              )}
-              {/* Transmissie - RDW geeft dit helaas niet door */}
-              <div className="bg-gray-100 rounded-xl p-3 opacity-60">
-                <p className="text-xs text-gray-500 mb-1">Transmissie</p>
-                <p className="font-semibold text-gray-500 text-sm italic">Niet beschikbaar (RDW)</p>
-              </div>
-            </div>
+            <p className="text-sm text-stone-500">Kenteken {plate.toUpperCase()}</p>
+            <h2 className="text-2xl font-bold text-stone-900">
+              {vehicleData.merk} {vehicleData.handelsbenaming}
+            </h2>
 
-            {/* Catalog Price */}
-            {vehicleData.catalogusprijs && (
-              <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-4 mb-6 border border-green-200">
-                <p className="text-sm text-green-600 mb-1">Catalogusprijs (nieuw)</p>
-                <p className="text-3xl font-bold text-green-700">
-                  €{parseInt(vehicleData.catalogusprijs).toLocaleString('nl-NL')}
-                </p>
-              </div>
-            )}
+            <dl className="mt-5 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-stone-200 pt-5 text-sm sm:grid-cols-3">
+              {details.map(([label, value]) => (
+                <div key={label}>
+                  <dt className="text-stone-500">{label}</dt>
+                  <dd className="font-medium text-stone-900">{value}</dd>
+                </div>
+              ))}
+            </dl>
 
-            {/* Action Buttons */}
-            <div className="space-y-3">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Link
-                href={`/verkoop?kenteken=${plate.toUpperCase()}&merk=${encodeURIComponent(vehicleData.merk)}&model=${encodeURIComponent(vehicleData.handelsbenaming)}&kleur=${encodeURIComponent(vehicleData.eerste_kleur)}&brandstof=${encodeURIComponent(vehicleData.brandstof_omschrijving || '')}&prijs=${vehicleData.catalogusprijs || ''}&image=${encodeURIComponent(vehicleImage || '')}`}
-                className="w-full py-4 bg-gradient-to-r from-green-600 to-emerald-500 rounded-full text-white font-bold text-lg hover:shadow-lg hover:shadow-green-500/30 transition-all flex items-center justify-center gap-3"
+                href={`/verkoop?kenteken=${plate.toUpperCase()}&merk=${encodeURIComponent(vehicleData.merk)}&model=${encodeURIComponent(vehicleData.handelsbenaming)}&kleur=${encodeURIComponent(vehicleData.eerste_kleur)}&brandstof=${encodeURIComponent(vehicleData.brandstof_omschrijving || "")}&prijs=${vehicleData.catalogusprijs || ""}&image=${encodeURIComponent(vehicleImage || "")}`}
+                className="flex-1 rounded-md bg-orange-600 py-3 text-center font-semibold text-white hover:bg-orange-700"
               >
-                <Car className="w-5 h-5" />
-                Ja, dit is mijn auto - Waardevraag
+                Dit is mijn auto, ga verder
               </Link>
               <button
                 onClick={onClose}
-                className="w-full py-3 glass rounded-full text-gray-600 hover:text-gray-900 transition-colors font-semibold"
+                className="flex-1 rounded-md border border-stone-300 py-3 font-semibold text-stone-700 hover:bg-stone-50"
               >
-                Nee, fout kenteken
+                Ander kenteken
               </button>
             </div>
 
-            {/* RDW Source */}
-            <p className="text-center text-gray-400 text-xs mt-4">
-              Gegevens via RDW (Realtime) • Foto via Wikipedia
-            </p>
+            <p className="mt-4 text-center text-xs text-stone-400">Voertuiggegevens: RDW · Foto: Wikipedia</p>
           </div>
         ) : null}
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
 }
 
-// Legacy Car Value Display Component (now uses real data)
-function CarValueResult({ plate, onClose }: { plate: string; onClose: () => void }) {
-  return <VehicleInfoPopup plate={plate} onClose={onClose} />;
-}
-
 export default function InkoopPage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [showResult, setShowResult] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
-  const [submittedPlate, setSubmittedPlate] = useState("");
-
-  useEffect(() => {
-    // Show popup after 3 seconds
-    const timer = setTimeout(() => {
-      setShowPopup(true);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const handlePlateSubmit = (plate: string) => {
-    setSubmittedPlate(plate);
-    setShowResult(true);
-  };
+  const [submittedPlate, setSubmittedPlate] = useState<string | null>(null);
 
   return (
-    <div className="min-h-screen bg-background overflow-x-hidden">
-      {/* Navigation */}
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="fixed top-0 left-0 right-0 z-50 nav-glass"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            <Link href="/">
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.2 }}
-                className="flex items-center gap-3"
-              >
-              <Image
-                src="/logo.png"
-                alt="DirectAutoHulp"
-                width={800}
-                height={240}
-                className="h-12 sm:h-16 md:h-20 lg:h-32 w-auto"
-              />
-              </motion.div>
-            </Link>
+    <div className="min-h-screen bg-white text-stone-900">
+      <SiteHeader />
 
-            <div className="hidden md:flex items-center gap-8">
-              <Link href="/#diensten" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
-                Diensten
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-500 group-hover:w-full transition-all duration-300" />
-              </Link>
-              <Link href="/inkoop" className="text-sm text-green-600 font-semibold">
-                Auto Inkoop
-              </Link>
-              <Link href="/transport" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
-                Auto Transport
-              </Link>
-              <Link href="/pechhulp" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
-                Pechhulp
-              </Link>
-              <Link href="/#contact" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
-                Contact
-              </Link>
-              <motion.button
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.7 }}
-                className="px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-500 rounded-full text-gray-900 font-semibold text-sm hover:shadow-lg hover:shadow-green-500/30 transition-all duration-300 animate-pulse-glow"
-              >
-                <Phone className="w-4 h-4 inline mr-2" />
-                Bel Direct
-              </motion.button>
-            </div>
-
-            <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="md:hidden p-2 text-gray-900">
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+      <section id="kenteken-check" className="relative overflow-hidden bg-stone-950">
+        <Image
+          src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1920&q=80"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover opacity-35"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/85 to-transparent" />
+        <div className="relative mx-auto max-w-6xl px-4 py-20 sm:px-6 sm:py-28">
+          <p className="text-sm font-semibold uppercase tracking-wider text-orange-500">Auto verkopen</p>
+          <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl">
+            Verkoop uw auto zonder gedoe.
+          </h1>
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-stone-300">
+            Vul uw kenteken in en vertel ons iets over de staat van de auto. U krijgt binnen 1 à 2 uur een bod. Akkoord?
+            Dan halen we de auto op en krijgt u direct uw geld.
+          </p>
+          <div className="mt-10">
+            <LicensePlateInput onSubmit={setSubmittedPlate} />
           </div>
+          <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-sm text-stone-300">
+            {["Gratis en vrijblijvend", "Ook schade- en sloopauto's", "Papierwerk geregeld"].map((t) => (
+              <li key={t} className="flex items-center gap-2">
+                <Check className="h-4 w-4 text-orange-500" />
+                {t}
+              </li>
+            ))}
+          </ul>
         </div>
-
-        <motion.div
-          initial={false}
-          animate={{ height: isMenuOpen ? "auto" : 0, opacity: isMenuOpen ? 1 : 0 }}
-          className="md:hidden overflow-hidden bg-white/95 backdrop-blur-xl border-t border-gray-100"
-        >
-          <div className="px-4 py-6 space-y-4">
-            <Link href="/" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-green-500 py-2 transition-colors">Home</Link>
-            <Link href="/#diensten" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-green-500 py-2 transition-colors">Diensten</Link>
-            <Link href="/inkoop" onClick={() => setIsMenuOpen(false)} className="block text-lg text-green-600 font-semibold py-2">Auto Inkoop</Link>
-            <Link href="/transport" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-green-500 py-2 transition-colors">Auto Transport</Link>
-            <Link href="/pechhulp" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-green-500 py-2 transition-colors">Pechhulp</Link>
-            <Link href="/#contact" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-green-500 py-2 transition-colors">Contact</Link>
-          </div>
-        </motion.div>
-      </motion.nav>
-
-      {/* HERO SECTION - NEW COMMERCIAL DESIGN */}
-      <section id="kenteken-check" className="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center overflow-hidden pt-16 sm:pt-20">
-        {/* Background Image - Clean car showroom */}
-        <div className="absolute inset-0">
-          <Image
-            src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1920&q=80"
-            alt="Luxury car garage"
-            fill
-            className="object-cover object-center"
-            sizes="100vw"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-        </div>
-        
-        <div className="absolute inset-0 grid-pattern opacity-20" />
-
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20"
-        >
-          {/* Back Link */}
-          <Link href="/#diensten" className="block mb-4">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="inline-flex items-center gap-2 text-white/60 hover:text-white transition-colors"
-            >
-              <ChevronLeft className="w-5 h-5" />
-              <span>Terug naar alle diensten</span>
-            </motion.div>
-          </Link>
-
-          {/* Commercial Badge */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-500/30 border border-green-400/50 mb-10"
-          >
-            <Sparkles className="w-4 h-4 text-green-400" />
-            <span className="text-sm text-white font-semibold">Eerlijke Prijs - Direct Uitbetaald</span>
-          </motion.div>
-
-          {/* Main Headline - COMMERCIAL & CENTERED */}
-          <div className="text-center">
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-2 tracking-tight"
-              style={{ 
-                textShadow: '0 0 40px rgba(16,185,129,0.5), 0 4px 20px rgba(0,0,0,0.8)',
-                letterSpacing: '-0.02em'
-              }}
-            >
-              <span className="text-white">VERKOOP JE AUTO</span>
-            </motion.h1>
-            
-            <motion.h2
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
-              className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-8 tracking-tight"
-              style={{ 
-                textShadow: '0 0 60px rgba(245,158,11,0.6), 0 4px 30px rgba(0,0,0,0.9)',
-                letterSpacing: '-0.02em'
-              }}
-            >
-              <span className="bg-gradient-to-r from-green-400 via-emerald-500 to-teal-400 bg-clip-text text-transparent">
-                DIRECT & EERLIJK!
-              </span>
-            </motion.h2>
-
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.5 }}
-              className="text-lg sm:text-2xl md:text-3xl text-white max-w-4xl mx-auto mb-8 font-medium"
-              style={{ textShadow: '0 2px 10px rgba(0,0,0,0.9)' }}
-            >
-              Binnen <span className="text-green-400 font-bold">1 minuut</span> je waarde bekend.
-              <br />
-              <span className="text-amber-400 font-bold">Direct bod</span> • 
-              <span className="text-amber-400 font-bold"> Geen gedoe</span> • 
-              <span className="text-amber-400 font-bold"> Cash geld</span>
-            </motion.p>
-          </div>
-          
-          {/* Trust badges - CENTERED */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.6 }}
-            className="flex flex-wrap justify-center gap-6 mb-10"
-          >
-            <div className="flex items-center gap-2 text-white/90 bg-white/10 px-4 py-2 rounded-full">
-              <CheckCircle className="w-5 h-5 text-green-400" />
-              <span className="text-sm font-medium">Gratis taxatie</span>
-            </div>
-            <div className="flex items-center gap-2 text-white/90 bg-white/10 px-4 py-2 rounded-full">
-              <CheckCircle className="w-5 h-5 text-green-400" />
-              <span className="text-sm font-medium">Direct geld</span>
-            </div>
-            <div className="flex items-center gap-2 text-white/90 bg-white/10 px-4 py-2 rounded-full">
-              <CheckCircle className="w-5 h-5 text-green-400" />
-              <span className="text-sm font-medium">Alle auto&apos;s welkom</span>
-            </div>
-            <div className="flex items-center gap-2 text-white/90 bg-white/10 px-4 py-2 rounded-full">
-              <CheckCircle className="w-5 h-5 text-green-400" />
-              <span className="text-sm font-medium">Papierwerk geregeld</span>
-            </div>
-          </motion.div>
-
-          {/* License Plate Input */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.7 }}
-            className="mb-8"
-          >
-            <LicensePlateInput onSubmit={handlePlateSubmit} />
-          </motion.div>
-
-          {/* Quick Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8 }}
-            className="flex flex-wrap justify-center gap-6 mt-8"
-          >
-            <div className="text-center">
-              <div className="text-3xl font-bold text-green-400">Direct</div>
-              <div className="text-sm text-white/70">Uitbetaald</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-green-400">Gratis</div>
-              <div className="text-sm text-white/70">Ophalen</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-green-400">24/7</div>
-              <div className="text-sm text-white/70">Bereikbaar</div>
-            </div>
-          </motion.div>
-        </motion.div>
       </section>
 
-      {/* WHY SELL TO US - COMMERCIAL SECTION */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-gray-50 to-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <span className="inline-block px-4 py-2 rounded-full bg-green-100 text-green-600 text-sm font-bold mb-4">
-              WAAROM WIJ?
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              Waarom je Auto aan <span className="gradient-text">Ons Verkopen</span>?
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Geen gedoe met private verkopen. Wij regelen alles en jij krijgt direct het geld.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8">
+      <section className="py-20 sm:py-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Zo werkt het</h2>
+          <ol className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {[
-              {
-                icon: Clock,
-                title: "Snel & Makkelijk",
-                desc: "Binnen 1 minuut weet je de waarde. Direct bod, geen gedoe."
-              },
-              {
-                icon: Wallet,
-                title: "Direct Uitbetaald",
-                desc: "Geen wachten. Direct geld op je rekening bij akkoord."
-              },
-              {
-                icon: Shield,
-                title: "Veilige Transactie",
-                desc: "Papierwerk wordt geregeld. Geen risico voor jou."
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.2 }}
-                className="bg-white rounded-3xl p-8 shadow-lg border border-gray-100 hover:shadow-xl transition-shadow"
-              >
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-6">
-                  <item.icon className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">{item.title}</h3>
-                <p className="text-gray-600">{item.desc}</p>
-              </motion.div>
+              ["Kenteken invullen", "We halen de gegevens van uw auto op bij de RDW."],
+              ["Staat doorgeven", "Kilometerstand, eventuele schade en een paar foto's."],
+              ["Bod ontvangen", "Binnen 1 à 2 uur hoort u wat wij voor de auto willen betalen."],
+              ["Ophalen en betalen", "We halen de auto op, regelen de overschrijving en betalen direct uit."],
+            ].map(([title, text], i) => (
+              <li key={title}>
+                <span className="text-sm font-semibold text-orange-600">Stap {i + 1}</span>
+                <h3 className="mt-2 text-lg font-semibold">{title}</h3>
+                <p className="mt-2 leading-relaxed text-stone-600">{text}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <section className="bg-stone-50 py-20 sm:py-24">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Welke auto&apos;s kopen we?</h2>
+          <p className="mt-3 max-w-2xl text-lg text-stone-600">
+            Eigenlijk alles. Of de auto nu nieuw is, een hoge kilometerstand heeft of niet meer rijdt.
+          </p>
+          <div className="mt-12 grid gap-6 md:grid-cols-3">
+            {[
+              ["Gebruikte auto's", "Alle merken en modellen, ook met een hoge kilometerstand."],
+              ["Luxe en sport", "Mercedes-Benz, BMW, Audi, Porsche en andere premium merken."],
+              ["Schade en sloop", "Motorschade, total loss of gewoon op. Ook die halen we op."],
+            ].map(([title, text]) => (
+              <div key={title} className="rounded-lg border border-stone-200 bg-white p-6">
+                <h3 className="text-lg font-semibold">{title}</h3>
+                <p className="mt-2 leading-relaxed text-stone-600">{text}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* HOW IT WORKS - STEP BY STEP */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-green-600 to-emerald-700 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-              Zo Verkoop je je Auto
-            </h2>
-            <p className="text-xl text-white/80">
-              In 4 simpele stappen, binnen 24 uur geregeld!
-            </p>
-          </motion.div>
+      <section className="py-20 sm:py-24">
+        <div className="mx-auto grid max-w-6xl gap-x-12 gap-y-10 px-4 sm:grid-cols-3 sm:px-6">
+          {[
+            ["Eerlijk bod", "Een marktconforme prijs, zonder verborgen kosten of afslag achteraf."],
+            ["Gratis ophalen", "We halen de auto op waar hij staat, in heel Nederland."],
+            ["Direct betaald", "Na akkoord staat het geld direct op uw rekening. De overschrijving regelen wij."],
+          ].map(([title, text]) => (
+            <div key={title} className="border-l-2 border-orange-600 pl-5">
+              <h3 className="text-lg font-semibold">{title}</h3>
+              <p className="mt-2 leading-relaxed text-stone-600">{text}</p>
+            </div>
+          ))}
+        </div>
+      </section>
 
-          <div className="grid md:grid-cols-4 gap-8">
-            {[
-              { step: "1", icon: Search, title: "Kenteken Check", desc: "Vul je kenteken in" },
-              { step: "2", icon: Euro, title: "Direct Bod", desc: "Binnen 1 minuut waarde" },
-              { step: "3", icon: FileText, title: "Papierwerk", desc: "Wij regelen alles" },
-              { step: "4", icon: HandCoins, title: "Geld Op Rekening", desc: "Direct uitbetaald" },
-            ].map((item, i) => (
-              <motion.div
-                key={item.step}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.15 }}
-                className="relative text-center"
-              >
-                <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center mx-auto mb-6 border-2 border-white/30">
-                  <item.icon className="w-10 h-10 text-white" />
-                </div>
-                <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-8 h-8 rounded-full bg-yellow-400 flex items-center justify-center text-sm font-bold text-gray-900">
-                  {item.step}
-                </div>
-                <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                <p className="text-white/70">{item.desc}</p>
-                {i < 3 && (
-                  <div className="hidden md:block absolute top-12 left-full w-full h-0.5 bg-white/30" />
-                )}
-              </motion.div>
-            ))}
+      <section className="bg-stone-900 py-20 text-white">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Liever direct contact?</h2>
+          <p className="mt-4 max-w-xl text-lg text-stone-300">
+            Stuur uw kenteken en een paar foto&apos;s via WhatsApp. Dan krijgt u zo snel mogelijk een bod.
+          </p>
+          <div className="mt-8">
+            <ContactButtons dark waText={WA_TEXT} />
           </div>
         </div>
       </section>
 
-      {/* WHAT WE BUY */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <span className="inline-block px-4 py-2 rounded-full bg-red-100 text-red-600 text-sm font-bold mb-4">
-              WE KOPEN ALLES!
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-              Welke Auto&apos;s <span className="gradient-text">Kopen Wij?</span>
-            </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              Geen auto is te oud, te nieuw, of te gek. <strong>We kopen ze allemaal!</strong>
-            </p>
-          </motion.div>
+      <SiteFooter />
+      <WhatsAppFloat text={WA_TEXT} />
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Gebruikte Auto's",
-                desc: "Alle merken en modellen. Ook met hoge km-stand.",
-                color: "from-blue-500 to-blue-600"
-              },
-              {
-                title: "Luxe & Sport",
-                desc: "Mercedes, BMW, Porsche, Audi, etc.",
-                color: "from-purple-500 to-purple-600"
-              },
-              {
-                title: "Sloop / Schade",
-                desc: "Motorschade, total loss, oude auto's.",
-                color: "from-orange-500 to-red-500"
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.2 }}
-                className="bg-gray-50 rounded-3xl p-8 border border-gray-200 hover:shadow-lg transition-all"
-              >
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-6`}>
-                  <Car className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-2xl font-bold text-gray-900 mb-3">{item.title}</h3>
-                <p className="text-gray-600">{item.desc}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* WAAROM BIJ ONS VERKOPEN */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-br from-gray-900 to-black text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">
-              Waarom Bij Ons <span className="gradient-text">Verkopen</span>?
-            </h2>
-            <p className="text-xl text-gray-400">
-              Snel, eerlijk en zonder gedoe. Wij maken het je makkelijk.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Euro,
-                title: "Eerlijke Prijs",
-                text: "Wij bieden altijd een eerlijke marktconforme prijs voor je auto. Geen verborgen kosten of verrassingen achteraf.",
-              },
-              {
-                icon: Car,
-                title: "Gratis Ophalen",
-                text: "Wij halen je auto gratis op, waar je ook bent in Nederland. Jij hoeft niks te regelen.",
-              },
-              {
-                icon: CheckCircle,
-                title: "Direct Uitbetaald",
-                text: "Na akkoord ontvang je direct je geld. Wij regelen ook al het papierwerk voor de overschrijving.",
-              },
-            ].map((item, i) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.2 }}
-                className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20 text-center"
-              >
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mx-auto mb-6">
-                  <item.icon className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-xl font-bold text-white mb-4">{item.title}</h3>
-                <p className="text-gray-300 leading-relaxed">{item.text}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FINAL CTA */}
-      <section className="py-12 sm:py-16 lg:py-20 bg-gradient-to-r from-green-600 to-emerald-600">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-6">
-              Klaar om je Auto te Verkopen?
-            </h2>
-            <p className="text-xl text-white/80 mb-8">
-              Vul je kenteken in en ontdek direct hoeveel je auto waard is. <strong>Gratis & vrijblijvend!</strong>
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button 
-                onClick={() => document.getElementById('kenteken-check')?.scrollIntoView({ behavior: 'smooth' })}
-                className="px-10 py-5 bg-white text-green-700 rounded-full font-bold text-lg hover:shadow-2xl hover:scale-105 transition-all flex items-center justify-center gap-3"
-              >
-                <Search className="w-5 h-5" />
-                Check je Kenteken
-              </button>
-              <a
-                href="tel:+31612345948"
-                className="px-10 py-5 bg-green-800 text-white rounded-full font-bold text-lg hover:bg-green-900 transition-all flex items-center justify-center gap-3"
-              >
-                <Phone className="w-5 h-5" />
-                Bel Direct: +31 6 12345948
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="py-10 sm:py-16 bg-gray-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
-            <div className="md:col-span-2">
-              <Link href="/">
-                <div className="flex items-center gap-3 mb-6">
-                  <Image
-                    src="/logo.png"
-                    alt="DirectAutoHulp"
-                    width={800}
-                    height={240}
-                    className="h-24 sm:h-32 md:h-44 w-auto mb-6"
-                  />
-                </div>
-              </Link>
-              <p className="text-gray-400 mb-6 max-w-md">
-                Uw betrouwbare partner voor autotransport, pechhulp en auto inkoop. Direct en eerlijk.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="text-white font-semibold mb-6">Diensten</h4>
-              <ul className="space-y-3 text-gray-400">
-                <li><Link href="/transport" className="hover:text-white transition-colors">Auto Transport</Link></li>
-                <li><Link href="/pechhulp" className="hover:text-white transition-colors">Pechhulp</Link></li>
-                <li><Link href="/inkoop" className="text-green-400 hover:text-white transition-colors">Auto Inkoop</Link></li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-white font-semibold mb-6">Contact</h4>
-              <ul className="space-y-3 text-gray-400">
-                <li className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-green-400" />
-                  <a href="tel:+31612345948" className="hover:text-green-300 transition-colors">+31 6 12345948</a>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-green-400" />
-                  <a href="mailto:info@directautohulp.nl" className="hover:text-green-300 transition-colors">info@directautohulp.nl</a>
-                </li>
-                <li className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-green-400" />
-                  <a href="https://maps.google.com/?q=Coolsingel+139+3012+AG+Rotterdam" target="_blank" rel="noopener noreferrer" className="hover:text-green-300 transition-colors">Coolsingel 139, 3012 AG Rotterdam</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-500 text-sm">
-              &copy; 2026 DirectAutoHulp. Alle rechten voorbehouden.
-            </p>
-            <p className="text-gray-500 text-sm">
-              <span>Medemogelijk gemaakt door </span>
-              <a href="https://varexo.nl" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:text-green-300 transition-colors">
-                Varexo
-              </a>
-            </p>
-            <p className="text-gray-500 text-sm">
-              BTW: NL005332380B82 | KVK: 87769743
-            </p>
-          </div>
-        </div>
-      </footer>
-
-      {/* Sell Car Popup - hidden on mobile */}
-      <AnimatePresence>
-        {showPopup && (
-          <div className="hidden md:block">
-            <SellCarPopup onClose={() => setShowPopup(false)} />
-          </div>
-        )}
-      </AnimatePresence>
-
-      {/* License Plate Result Modal */}
-      <AnimatePresence>
-        {showResult && (
-          <CarValueResult plate={submittedPlate} onClose={() => setShowResult(false)} />
-        )}
-      </AnimatePresence>
-
-      {/* WhatsApp Widget */}
-      <a
-        href="https://wa.me/31612345948?text=Ik%20heb%20een%20vraagje%20over%20directautohulp"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 left-6 z-50 group"
-      >
-        <div className="flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white rounded-full px-4 py-3 shadow-lg hover:shadow-xl transition-all duration-300">
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-          </svg>
-          <span className="font-semibold text-sm">WhatsApp</span>
-        </div>
-      </a>
+      {submittedPlate && <VehicleInfoPopup plate={submittedPlate} onClose={() => setSubmittedPlate(null)} />}
     </div>
   );
 }

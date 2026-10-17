@@ -1,821 +1,241 @@
-"use client";
-
-import { motion, useScroll, useTransform } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { ArrowRight, Check } from "lucide-react";
 import {
-  Phone,
-  Clock,
-  MapPin,
-  Mail,
-  Truck,
-  Wrench,
-  DollarSign,
-  Shield,
-  CheckCircle,
-  ArrowRight,
-  Star,
-  ChevronRight,
-  Menu,
-  X,
-  Euro,
-  Navigation,
-  Car,
-  BadgeCheck,
-  Sparkles,
-  Target,
-  Award,
-} from "lucide-react";
-import { useState, useRef } from "react";
+  SiteHeader,
+  SiteFooter,
+  WhatsAppFloat,
+  ContactButtons,
+  PHONE_TEL,
+  PHONE_DISPLAY,
+  EMAIL,
+  ADDRESS,
+  MAPS_URL,
+} from "@/components/site";
 
-// Smooth scroll helper zonder hash in URL
-function scrollToSection(sectionId: string) {
-  const element = document.getElementById(sectionId);
-  if (element) {
-    element.scrollIntoView({ behavior: 'smooth' });
-  }
-}
-
-const fadeInUp = {
-  initial: { opacity: 0, y: 60 },
-  animate: { opacity: 1, y: 0 },
-};
-
-const fadeIn = {
-  initial: { opacity: 0 },
-  animate: { opacity: 1 },
-};
-
-const staggerContainer = {
-  animate: {
-    transition: {
-      staggerChildren: 0.1,
-    },
+const services = [
+  {
+    href: "/pechhulp",
+    title: "Pechhulp & sleepdienst",
+    text: "Auto start niet, lekke band of een ongeluk gehad? We komen naar u toe en slepen de auto weg als het ter plekke niet op te lossen is.",
+    points: ["Dag en nacht bereikbaar", "Geen lidmaatschap nodig", "Alle merken en modellen"],
+    image: "https://images.unsplash.com/photo-1487754180451-c456f719a1fc?w=1200&q=80",
   },
-};
+  {
+    href: "/transport",
+    title: "Autotransport",
+    text: "Een auto van A naar B, binnen Nederland of naar het buitenland. Opgehaald en afgeleverd op het adres dat u opgeeft.",
+    points: ["NIWO-vergunning", "All-risk verzekerd", "Heel Europa"],
+    image: "https://images.unsplash.com/photo-1601584115197-04ecc0da31d7?w=1200&q=80",
+  },
+  {
+    href: "/inkoop",
+    title: "Auto verkopen",
+    text: "Vul uw kenteken in, stuur een paar foto's en u krijgt een bod. Akkoord? Dan halen we de auto op en betalen direct.",
+    points: ["Bod binnen 1 à 2 uur", "Ook schade- en sloopauto's", "Papierwerk geregeld"],
+    image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?w=1200&q=80",
+  },
+];
+
+const facts = [
+  { label: "Bereikbaar", value: "24/7" },
+  { label: "Vergunning", value: "NIWO" },
+  { label: "Verzekering", value: "All-risk" },
+  { label: "Werkgebied", value: "NL & EU" },
+];
 
 export default function Home() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
-
-  const heroY = useTransform(scrollYProgress, [0, 0.5], [0, 150]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
-
   return (
-    <div ref={containerRef} className="min-h-screen bg-background overflow-x-hidden">
-      {/* Navigation */}
-      <motion.nav
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="fixed top-0 left-0 right-0 z-50 nav-glass"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-20">
-            <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: 0.2 }}
-              className="flex items-center gap-3"
-            >
-              <Image
-                src="/logo.png"
-                alt="DirectAutoHulp"
-                width={800}
-                height={240}
-                className="h-12 sm:h-16 md:h-20 lg:h-32 w-auto"
-              />
-            </motion.div>
+    <div className="min-h-screen bg-white text-stone-900">
+      <SiteHeader />
 
-            {/* Desktop Menu */}
-            <div className="hidden md:flex items-center gap-8">
-              <button 
-                onClick={() => scrollToSection('diensten')}
-                className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group cursor-pointer"
-              >
-                Diensten
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300" />
-              </button>
-              <Link href="/inkoop" className="text-sm text-green-600 font-semibold hover:text-green-700 transition-colors duration-300 relative group">
-                Auto Inkoop
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-green-500 group-hover:w-full transition-all duration-300" />
-              </Link>
-              <Link href="/transport" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
-                Auto Transport
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300" />
-              </Link>
-              <Link href="/pechhulp" className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group">
-                Pechhulp
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300" />
-              </Link>
-              <button 
-                onClick={() => scrollToSection('contact')}
-                className="text-sm text-gray-700 hover:text-gray-900 transition-colors duration-300 relative group cursor-pointer"
-              >
-                Contact
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-500 group-hover:w-full transition-all duration-300" />
-              </button>
-              <motion.button
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.7 }}
-                className="px-6 py-3 bg-gradient-to-r from-red-600 to-red-500 rounded-full text-gray-900 font-semibold text-sm hover:shadow-lg hover:shadow-red-500/30 transition-all duration-300 animate-pulse-glow"
-              >
-                <Phone className="w-4 h-4 inline mr-2" />
-                Bel Direct
-              </motion.button>
+      {/* Hero */}
+      <section className="relative overflow-hidden bg-stone-950">
+        <Image
+          src="https://images.unsplash.com/photo-1592198084033-aade902d1aae?w=1920&q=80"
+          alt=""
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover opacity-40"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-stone-950 via-stone-950/80 to-transparent" />
+        <div className="relative mx-auto max-w-6xl px-4 py-24 sm:px-6 sm:py-32 lg:py-40">
+          <p className="text-sm font-semibold uppercase tracking-wider text-orange-500">
+            Rotterdam · dag en nacht bereikbaar
+          </p>
+          <h1 className="mt-4 max-w-2xl text-4xl font-bold leading-tight tracking-tight text-white sm:text-5xl lg:text-6xl">
+            Pech, transport of uw auto verkopen? Eén nummer.
+          </h1>
+          <p className="mt-6 max-w-xl text-lg leading-relaxed text-stone-300">
+            DirectAutoHulp helpt bij pech langs de weg, sleept uw auto weg, vervoert auto&apos;s door heel Europa en
+            koopt uw auto in. Stuur een WhatsApp en u hoort snel van ons.
+          </p>
+          <div className="mt-10">
+            <ContactButtons dark />
+          </div>
+        </div>
+      </section>
+
+      {/* Facts bar */}
+      <section className="border-b border-stone-200 bg-stone-50">
+        <dl className="mx-auto grid max-w-6xl grid-cols-2 divide-stone-200 px-4 sm:px-6 md:grid-cols-4 md:divide-x">
+          {facts.map((f) => (
+            <div key={f.label} className="py-6 md:px-6 md:first:pl-0">
+              <dt className="text-sm text-stone-500">{f.label}</dt>
+              <dd className="mt-1 text-2xl font-bold">{f.value}</dd>
             </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              onClick={() => setIsMenuOpen(!isMenuOpen)}
-              className="md:hidden p-2 text-gray-900"
-            >
-              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
-        </div>
-
-        {/* Mobile Menu */}
-        <motion.div
-          initial={false}
-          animate={{ height: isMenuOpen ? "auto" : 0, opacity: isMenuOpen ? 1 : 0 }}
-          className="md:hidden overflow-hidden bg-white/95 backdrop-blur-xl border-t border-gray-100"
-        >
-          <div className="px-4 py-6 space-y-4">
-            <Link href="/" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-900 font-semibold py-2">Home</Link>
-            <button 
-              onClick={() => { scrollToSection('diensten'); setIsMenuOpen(false); }}
-              className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors text-left w-full"
-            >Diensten</button>
-            <Link href="/inkoop" onClick={() => setIsMenuOpen(false)} className="block text-lg text-green-600 font-semibold hover:text-green-700 py-2 transition-colors">Auto Inkoop</Link>
-            <Link href="/transport" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Auto Transport</Link>
-            <Link href="/pechhulp" onClick={() => setIsMenuOpen(false)} className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors">Pechhulp</Link>
-            <button 
-              onClick={() => { scrollToSection('contact'); setIsMenuOpen(false); }}
-              className="block text-lg text-gray-600 hover:text-red-500 py-2 transition-colors text-left w-full"
-            >Contact</button>
-          </div>
-        </motion.div>
-      </motion.nav>
-
-      {/* Hero Section */}
-      <section className="relative min-h-[85vh] sm:min-h-screen flex items-center justify-center overflow-hidden">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src="https://images.unsplash.com/photo-1592198084033-aade902d1aae?w=1920&q=80"
-            alt="Ferrari Purosangue"
-            fill
-            className="object-cover object-center"
-            sizes="100vw"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent" />
-        </div>
-        
-        <div className="absolute inset-0 hero-gradient" />
-        <div className="absolute inset-0 grid-pattern opacity-50" />
-        
-        {/* Floating Elements */}
-        <motion.div
-          animate={{ y: [0, -30, 0], rotate: [0, 5, 0] }}
-          transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-1/4 right-4 sm:right-20 w-32 sm:w-64 h-32 sm:h-64 bg-gradient-to-br from-red-600/20 to-transparent rounded-full blur-3xl"
-        />
-        <motion.div
-          animate={{ y: [0, 30, 0], rotate: [0, -5, 0] }}
-          transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-1/4 left-4 sm:left-20 w-48 sm:w-96 h-48 sm:h-96 bg-gradient-to-br from-blue-600/10 to-transparent rounded-full blur-3xl"
-        />
-
-        <motion.div
-          style={{ y: heroY, opacity: heroOpacity }}
-          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-28 lg:pt-32"
-        >
-          <div className="text-center">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black/40 backdrop-blur-sm mb-10 border border-white/20"
-            >
-              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-              <span className="text-sm text-white font-semibold">24/7 Bereikbaar - Door heel Europa</span>
-            </motion.div>
-
-            {/* Main Headline - COMMERCIAL & CENTERED */}
-            <motion.h1
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-2 tracking-tight"
-              style={{ 
-                textShadow: '0 0 40px rgba(239,68,68,0.5), 0 4px 20px rgba(0,0,0,0.8)',
-                letterSpacing: '-0.02em'
-              }}
-            >
-              <span className="text-white">JE AUTO IN</span>
-            </motion.h1>
-            
-            <motion.h2
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.3 }}
-              className="text-2xl sm:text-4xl md:text-6xl lg:text-7xl font-black mb-8 tracking-tight"
-              style={{ 
-                textShadow: '0 0 60px rgba(245,158,11,0.6), 0 4px 30px rgba(0,0,0,0.9)',
-                letterSpacing: '-0.02em'
-              }}
-            >
-              <span className="bg-gradient-to-r from-red-400 via-orange-500 to-amber-400 bg-clip-text text-transparent">
-                VEILIGE HANDEN!
-              </span>
-            </motion.h2>
-
-            <motion.p
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-              className="text-lg sm:text-2xl md:text-3xl text-white max-w-4xl mx-auto mb-10 font-medium"
-              style={{ textShadow: '0 2px 10px rgba(0,0,0,0.9)' }}
-            >
-              <span className="text-red-400 font-bold">Transport</span> • 
-              <span className="text-amber-400 font-bold"> Pechhulp</span> • 
-              <span className="text-amber-400 font-bold"> Inkoop</span>
-              <br />
-              Door heel <span className="text-green-400 font-bold">Europa</span>.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-            >
-              <button
-                onClick={() => scrollToSection('contact')}
-                className="group px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 rounded-full text-white font-bold text-lg hover:shadow-2xl hover:shadow-red-500/40 transition-all duration-300 flex items-center gap-3 cursor-pointer"
-              >
-                <Phone className="w-5 h-5" />
-                Direct Contact
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-              <button
-                onClick={() => scrollToSection('diensten')}
-                className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full text-white font-semibold text-lg hover:bg-white/20 transition-all duration-300 flex items-center gap-3 cursor-pointer"
-              >
-                <MapPin className="w-5 h-5" />
-                Bekijk Diensten
-              </button>
-            </motion.div>
-
-            {/* Stats */}
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.8 }}
-              className="mt-10 sm:mt-16 grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-6 max-w-4xl mx-auto"
-            >
-              {[
-                { value: "24/7", label: "Bereikbaar" },
-                { value: "EU", label: "Door Heel Europa" },
-                { value: "All-Risk", label: "Verzekerd Transport" },
-                { value: "NIWO", label: "Gecertificeerd" },
-              ].map((stat, i) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ delay: 1 + i * 0.1 }}
-                  className="rounded-2xl p-3 sm:p-6 text-center bg-white/10 backdrop-blur-md border border-white/15"
-                >
-                  <div className="text-3xl sm:text-4xl font-bold text-white mb-2">{stat.value}</div>
-                  <div className="text-sm text-white/70">{stat.label}</div>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </motion.div>
-
-        {/* Scroll Indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.5 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
-        >
-          <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-6 h-10 rounded-full border-2 border-white/30 flex justify-center pt-2"
-          >
-            <div className="w-1.5 h-3 rounded-full bg-white/60" />
-          </motion.div>
-        </motion.div>
+          ))}
+        </dl>
       </section>
 
-      {/* Services Section */}
-      <section id="diensten" className="py-16 sm:py-24 lg:py-32 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={staggerContainer}
-            className="text-center mb-20"
-          >
-            <motion.span variants={fadeInUp} className="inline-block px-4 py-2 rounded-full bg-red-500/10 text-red-400 text-sm font-semibold mb-6">
-              ONZE DIENSTEN
-            </motion.span>
-            <motion.h2 variants={fadeInUp} className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
-              Alles Voor <span className="gradient-text">Jouw Auto</span>
-            </motion.h2>
-            <motion.p variants={fadeInUp} className="text-xl text-gray-600 max-w-3xl mx-auto">
-              Van transport tot pechhulp, van inkoop tot verkoop. Wij regelen het allemaal.
-            </motion.p>
-          </motion.div>
+      {/* Services */}
+      <section className="py-20 sm:py-28">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Waar we mee helpen</h2>
+          <p className="mt-3 max-w-2xl text-lg text-stone-600">
+            Drie diensten, één aanspreekpunt. U belt of appt ons en wij regelen de rest.
+          </p>
 
-          <div className="grid md:grid-cols-3 gap-8 items-stretch">
-            {/* Service 1: Transport (Links) */}
-            <Link href="/transport" className="h-full">
-              <motion.div
-                initial={{ opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
-                whileHover={{ y: -10, scale: 1.02 }}
-                className="glass-card rounded-3xl p-8 group cursor-pointer relative overflow-hidden h-full"
+          <div className="mt-12 grid gap-8 md:grid-cols-3">
+            {services.map((s) => (
+              <Link
+                key={s.href}
+                href={s.href}
+                className="group flex flex-col overflow-hidden rounded-lg border border-stone-200 bg-white transition-shadow hover:shadow-lg"
               >
-                <div className="absolute inset-0 bg-gradient-to-br from-red-600/20 to-orange-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative z-10">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-red-500/30">
-                    <Truck className="w-8 h-8 text-gray-900" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Auto Transport</h3>
-                  <p className="text-gray-600 mb-6 leading-relaxed">
-                    Snel en veilig transport door heel Europa. Ophaalservice op locatie, 
-                    volledig verzekerd en met GPS-tracking.
-                  </p>
-                  <ul className="space-y-3 mb-8">
-                    {["Pan-Europa dekking", "GPS-tracking", "Volledig verzekerd", "Binnen 48u opgehaald"].map((item) => (
-                      <li key={item} className="flex items-center gap-3 text-gray-700">
-                        <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                        <span>{item}</span>
+                <div className="relative aspect-[16/10] bg-stone-200">
+                  <Image src={s.image} alt="" fill sizes="(min-width: 768px) 33vw, 100vw" className="object-cover" />
+                </div>
+                <div className="flex flex-1 flex-col p-6">
+                  <h3 className="text-xl font-semibold">{s.title}</h3>
+                  <p className="mt-3 leading-relaxed text-stone-600">{s.text}</p>
+                  <ul className="mt-5 space-y-2 text-sm text-stone-700">
+                    {s.points.map((p) => (
+                      <li key={p} className="flex items-center gap-2">
+                        <Check className="h-4 w-4 flex-shrink-0 text-orange-600" />
+                        {p}
                       </li>
                     ))}
                   </ul>
-                  <div className="flex items-center gap-2 text-red-400 font-semibold group-hover:gap-4 transition-all">
-                    Bekijk Dienst <ChevronRight className="w-5 h-5" />
-                  </div>
+                  <span className="mt-6 inline-flex items-center gap-1 text-sm font-semibold text-orange-600">
+                    Meer informatie
+                    <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+                  </span>
                 </div>
-              </motion.div>
-            </Link>
-
-            {/* Service 2: Inkoop (MIDDEN) - Extra uitstraling! */}
-            <Link href="/inkoop" className="h-full md:-mt-4 md:mb-4">
-              <motion.div
-                initial={{ opacity: 0, y: 60, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                whileHover={{ y: -15, scale: 1.03 }}
-                className="glass-card rounded-3xl p-8 group cursor-pointer relative overflow-hidden h-full border-2 border-green-500/30 shadow-2xl shadow-green-500/20"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-green-600/30 to-emerald-600/20 opacity-100 transition-opacity duration-500" />
-                <div className="relative z-10">
-                  <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-xl shadow-green-500/40">
-                    <DollarSign className="w-10 h-10 text-gray-900" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">Auto Inkoop</h3>
-                  <p className="text-gray-600 mb-6 leading-relaxed text-center">
-                    <strong className="text-green-600 text-lg block mb-2">Jouw auto direct verkocht voor de beste prijs!</strong>
-                    <span className="block">Direct geld op je rekening, wij regelen al het papierwerk. Snel, veilig en zonder gedoe.</span>
-                  </p>
-                  <ul className="space-y-3 mb-8">
-                    {["Beste prijs gegarandeerd", "Direct uitbetaald", "Gratis ophalen", "Alle auto's welkom", "Geen gedoe"].map((item) => (
-                      <li key={item} className="flex items-center gap-3 text-gray-700">
-                        <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="flex items-center gap-2 text-green-500 font-bold group-hover:gap-4 transition-all text-lg">
-                    Direct Verkopen <ChevronRight className="w-5 h-5" />
-                  </div>
-                </div>
-              </motion.div>
-            </Link>
-
-            {/* Service 3: Pechhulp (Rechts) */}
-            <Link href="/pechhulp" className="h-full">
-              <motion.div
-                initial={{ opacity: 0, y: 60 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                whileHover={{ y: -10, scale: 1.02 }}
-                className="glass-card rounded-3xl p-8 group cursor-pointer relative overflow-hidden h-full"
-              >
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-cyan-600/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <div className="relative z-10">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-blue-500/30">
-                    <Wrench className="w-8 h-8 text-gray-900" />
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">24/7 Pechhulp</h3>
-                  <p className="text-gray-600 mb-6 leading-relaxed">
-                    Altijd en overal geholpen. Onze wegenwacht staat dag en nacht voor je klaar 
-                    met professionele ondersteuning.
-                  </p>
-                  <ul className="space-y-3 mb-8">
-                    {["Gemiddelde aanrijtijd 30min", "Altijd bereikbaar", "Directe afhandeling", "Alle merken"].map((item) => (
-                      <li key={item} className="flex items-center gap-3 text-gray-700">
-                        <CheckCircle className="w-5 h-5 text-green-400 flex-shrink-0" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                  <div className="flex items-center gap-2 text-blue-400 font-semibold group-hover:gap-4 transition-all">
-                    Bekijk Dienst <ChevronRight className="w-5 h-5" />
-                  </div>
-                </div>
-              </motion.div>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Why Choose Us */}
-      <section id="over-ons" className="py-16 sm:py-24 lg:py-32 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-red-900/5 to-transparent" />
-        
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <span className="inline-block px-4 py-2 rounded-full bg-red-500/10 text-red-400 text-sm font-semibold mb-6">
-                WAAROM WIJ?
-              </span>
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-6">
-                Uw <span className="gradient-text">Betrouwbare</span> Autopartner
-              </h2>
-              <p className="text-xl text-gray-600 mb-8 leading-relaxed">
-                Wij zijn dé keuze voor al je auto-gerelateerde zaken. Professioneel, snel en altijd verzekerd.
-              </p>
-
-              <div className="space-y-4">
-                {[
-                  { icon: Shield, title: "100% Verzekerd", desc: "Alle transporten volledig verzekerd" },
-                  { icon: Clock, title: "Snelle Service", desc: "Gemiddelde responstijd van 30 minuten" },
-                  { icon: BadgeCheck, title: "Erkend Bedrijf", desc: "KVK geregistreerd & BRDO erkend" },
-                  { icon: Star, title: "NIWO Vergunning", desc: "Officieel gecertificeerd voor autotransport" },
-                ].map((feature, i) => (
-                  <motion.div
-                    key={feature.title}
-                    initial={{ opacity: 0, x: -30 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 }}
-                    className="flex items-start gap-4 p-4 rounded-xl glass hover:bg-white/5 transition-colors"
-                  >
-                    <div className="w-12 h-12 rounded-xl bg-red-500/20 flex items-center justify-center flex-shrink-0">
-                      <feature.icon className="w-6 h-6 text-red-400" />
-                    </div>
-                    <div>
-                      <h4 className="text-lg font-semibold text-gray-900 mb-1">{feature.title}</h4>
-                      <p className="text-gray-600">{feature.desc}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 60 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="relative"
-            >
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-red-600/30 to-blue-600/30 rounded-3xl blur-2xl" />
-                <div className="relative glass-card rounded-3xl p-8">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-4">
-                      <div className="glass rounded-2xl p-6 text-center">
-                        <Car className="w-10 h-10 text-red-400 mx-auto mb-3" />
-                        <div className="text-3xl font-bold text-gray-900">EU-breed</div>
-                        <div className="text-sm text-gray-600">Transport</div>
-                      </div>
-                      <div className="glass rounded-2xl p-6 text-center">
-                        <Navigation className="w-10 h-10 text-blue-400 mx-auto mb-3" />
-                        <div className="text-3xl font-bold text-gray-900">24/7</div>
-                        <div className="text-sm text-gray-600">Bereikbaar</div>
-                      </div>
-                    </div>
-                    <div className="space-y-4 pt-8">
-                      <div className="glass rounded-2xl p-6 text-center">
-                        <Euro className="w-10 h-10 text-green-400 mx-auto mb-3" />
-                        <div className="text-3xl font-bold text-gray-900">All-Risk</div>
-                        <div className="text-sm text-gray-600">Verzekerd</div>
-                      </div>
-                      <div className="glass rounded-2xl p-6 text-center">
-                        <Clock className="w-10 h-10 text-orange-400 mx-auto mb-3" />
-                        <div className="text-3xl font-bold text-gray-900">NIWO</div>
-                        <div className="text-sm text-gray-600">Gecertificeerd</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* How It Works */}
-      <section id="hoe-werkt-het" className="py-16 sm:py-24 lg:py-32 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-20"
-          >
-            <span className="inline-block px-4 py-2 rounded-full bg-red-500/10 text-red-400 text-sm font-semibold mb-6">
-              HOE HET WERKT
-            </span>
-            <h2 className="text-3xl sm:text-4xl lg:text-6xl font-bold text-gray-900 mb-6">
-              Simpel, Snel & <span className="gradient-text">Transparant</span>
-            </h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8 relative">
-            {/* Connecting Line */}
-            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-gradient-to-r from-red-500/0 via-red-500/50 to-red-500/0 -translate-y-1/2" />
-
-            {[
-              { step: "01", title: "Contact Opnemen", desc: "Bel ons of vul het formulier in. We reageren binnen 30 minuten." },
-              { step: "02", title: "Offerte Ontvangen", desc: "Gratis offerte zonder verplichtingen. Altijd een eerlijke prijs." },
-              { step: "03", title: "Geregeld!", desc: "Wij regelen alles. Jij hoeft alleen maar te ontvangen." },
-            ].map((item, i) => (
-              <motion.div
-                key={item.step}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.2 }}
-                className="relative"
-              >
-                <div className="glass-card rounded-3xl p-8 text-center relative z-10 h-full">
-                  <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-red-500 to-orange-500 flex items-center justify-center mx-auto mb-6 text-2xl font-bold text-gray-900">
-                    {item.step}
-                  </div>
-                  <h3 className="text-2xl font-bold text-gray-900 mb-4">{item.title}</h3>
-                  <p className="text-gray-600">{item.desc}</p>
-                </div>
-              </motion.div>
+              </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Contact Form Section */}
-      <section id="contact" className="py-16 sm:py-24 lg:py-32 relative overflow-hidden bg-gradient-to-br from-red-600/10 via-transparent to-blue-600/10">
-        <motion.div
-          initial={{ opacity: 0, y: 60 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8 }}
-          className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
-        >
-          <div className="glass-card rounded-3xl p-8 sm:p-12">
-            <div className="text-center mb-10">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4">
-                Neem <span className="gradient-text">Contact</span> Op
-              </h2>
-              <p className="text-xl text-gray-600">
-                Vul het formulier in en we nemen binnen 30 minuten contact met je op.
-              </p>
-            </div>
-
-            <form className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Naam</label>
-                  <input
-                    type="text"
-                    placeholder="Jouw naam"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Telefoonnummer</label>
-                  <input
-                    type="tel"
-                    placeholder="+31 6 12345948"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all"
-                  />
-                </div>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">E-mail</label>
-                  <input
-                    type="email"
-                    placeholder="email@voorbeeld.nl"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-semibold text-gray-700 mb-2">Locatie / Adres</label>
-                  <input
-                    type="text"
-                    placeholder="Jouw locatie"
-                    className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Onderwerp</label>
-                <select className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all">
-                  <option>Kies een dienst...</option>
-                  <option>Auto Transport</option>
-                  <option>Pechhulp</option>
-                  <option>Auto Inkoop</option>
-                  <option>Overige vragen</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">Bericht</label>
-                <textarea
-                  rows={4}
-                  placeholder="Vertel ons wat je nodig hebt"
-                  className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-white/50 focus:bg-white focus:border-green-500 focus:ring-2 focus:ring-green-500/20 outline-none transition-all resize-none"
-                />
-              </div>
-
-              <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <button
-                  type="submit"
-                  className="flex-1 py-4 bg-gradient-to-r from-green-600 to-emerald-500 rounded-full text-white font-bold text-lg hover:shadow-2xl hover:shadow-green-500/40 transition-all duration-300 flex items-center justify-center gap-3"
-                >
-                  <Phone className="w-5 h-5" />
-                  Verstuur Bericht
-                </button>
-                <a
-                  href="tel:+31612345948"
-                  className="flex-1 py-4 bg-gray-100 rounded-full text-gray-900 font-semibold text-lg hover:bg-gray-200 transition-all duration-300 flex items-center justify-center gap-3"
-                >
-                  <Phone className="w-5 h-5" />
-                  Bel Direct
-                </a>
-              </div>
-            </form>
-
-            <div className="mt-10 pt-8 border-t border-gray-200">
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-red-100 flex items-center justify-center">
-                    <Phone className="w-5 h-5 text-red-500" />
-                  </div>
-                  <p className="font-semibold text-gray-900">Telefoon</p>
-                  <a href="tel:+31612345948" className="text-sm text-gray-600 hover:text-red-500 transition-colors">+31 6 12345948</a>
-                </div>
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
-                    <MapPin className="w-5 h-5 text-blue-500" />
-                  </div>
-                  <p className="font-semibold text-gray-900">Adres</p>
-                  <a href="https://maps.google.com/?q=Coolsingel+139+3012+AG+Rotterdam" target="_blank" rel="noopener noreferrer" className="text-sm text-gray-600 hover:text-blue-500 transition-colors">Coolsingel 139, 3012 AG Rotterdam</a>
-                </div>
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center">
-                    <Mail className="w-5 h-5 text-green-500" />
-                  </div>
-                  <p className="font-semibold text-gray-900">Email</p>
-                  <a href="mailto:info@directautohulp.nl" className="text-sm text-gray-600 hover:text-green-500 transition-colors">info@directautohulp.nl</a>
-                </div>
-                <div className="flex flex-col items-center gap-2">
-                  <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center">
-                    <Clock className="w-5 h-5 text-orange-500" />
-                  </div>
-                  <p className="font-semibold text-gray-900">Bereikbaar</p>
-                  <p className="text-sm text-gray-600">24/7 - Altijd bereikbaar</p>
-                </div>
-              </div>
-            </div>
+      {/* How it works */}
+      <section className="bg-stone-50 py-20 sm:py-28">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-[1fr_1.4fr]">
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Zo werkt het</h2>
+            <p className="mt-3 text-lg text-stone-600">
+              Geen formulieren met tien stappen. Een bericht of telefoontje is genoeg.
+            </p>
           </div>
-        </motion.div>
+          <ol className="space-y-8">
+            {[
+              {
+                title: "Stuur een WhatsApp of bel",
+                text: "Vertel waar u bent en wat er aan de hand is. Een foto of uw kenteken helpt ons om meteen goed te kunnen inschatten.",
+              },
+              {
+                title: "U krijgt een prijs vooraf",
+                text: "We zeggen eerlijk wat het kost en hoe snel we er kunnen zijn. Pas als u akkoord geeft, gaan we rijden.",
+              },
+              {
+                title: "Wij komen in actie",
+                text: "Pechhulp ter plaatse, de auto op de wagen of het bod uitbetaald. U wordt onderweg op de hoogte gehouden.",
+              },
+            ].map((step, i) => (
+              <li key={step.title} className="flex gap-5">
+                <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-stone-900 font-semibold text-white">
+                  {i + 1}
+                </span>
+                <div>
+                  <h3 className="text-lg font-semibold">{step.title}</h3>
+                  <p className="mt-1 leading-relaxed text-stone-600">{step.text}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
       </section>
 
-      {/* Footer */}
-      <footer className="py-10 sm:py-16 border-t border-white/5">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
-            <div className="md:col-span-2">
-              <Link href="/">
-                <Image
-                  src="/logo.png"
-                  alt="DirectAutoHulp"
-                  width={800}
-                  height={240}
-                  className="h-24 sm:h-32 md:h-44 w-auto mb-6"
-                />
-              </Link>
-              <p className="text-gray-600 mb-6 max-w-md">
-                Uw betrouwbare partner voor autotransport, pechhulp en auto inkoop. 
-                24/7 beschikbaar, professioneel en transparant.
-              </p>
-            </div>
-
-            <div>
-              <h4 className="text-gray-900 font-semibold mb-6">Diensten</h4>
-              <ul className="space-y-3">
-                <li>
-                  <Link href="/transport" className="text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2">
-                    <Truck className="w-4 h-4" /> Auto Transport
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/pechhulp" className="text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2">
-                    <Wrench className="w-4 h-4" /> Pechhulp
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/inkoop" className="text-gray-600 hover:text-gray-900 transition-colors flex items-center gap-2">
-                    <DollarSign className="w-4 h-4" /> Auto Inkoop
-                  </Link>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-gray-900 font-semibold mb-6">Contact</h4>
-              <ul className="space-y-3 text-gray-600">
-                <li className="flex items-center gap-2">
-                  <Phone className="w-4 h-4 text-red-400" />
-                  <a href="tel:+31612345948" className="hover:text-red-500 transition-colors">+31 6 12345948</a>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Mail className="w-4 h-4 text-green-400" />
-                  <a href="mailto:info@directautohulp.nl" className="hover:text-green-500 transition-colors">info@directautohulp.nl</a>
-                </li>
-                <li className="flex items-center gap-2">
-                  <MapPin className="w-4 h-4 text-red-400" />
-                  <a href="https://maps.google.com/?q=Coolsingel+139+3012+AG+Rotterdam" target="_blank" rel="noopener noreferrer" className="hover:text-red-500 transition-colors">Coolsingel 139, 3012 AG Rotterdam</a>
-                </li>
-                <li className="flex items-center gap-2">
-                  <BadgeCheck className="w-4 h-4 text-green-400" />
-                  <span>KVK: 87769743</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-            <p className="text-gray-500 text-sm">
-              © 2026 DirectAutoHulp. Alle rechten voorbehouden.
-            </p>
-            <p className="text-gray-500 text-sm">
-              <span>Medemogelijk gemaakt door </span>
-              <a href="https://varexo.nl" target="_blank" rel="noopener noreferrer" className="text-green-400 hover:text-green-300 transition-colors">
-                Varexo
-              </a>
-            </p>
-            <p className="text-gray-500 text-sm">
-              BTW: NL005332380B82 | KVK: 87769743
-            </p>
+      {/* Why us */}
+      <section className="py-20 sm:py-28">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Waarom DirectAutoHulp</h2>
+          <div className="mt-12 grid gap-x-12 gap-y-10 sm:grid-cols-2">
+            {[
+              {
+                title: "Erkend en verzekerd",
+                text: "We hebben een NIWO-vergunning voor beroepsvervoer en alle transporten zijn all-risk verzekerd. Ingeschreven bij de KvK onder 87769743.",
+              },
+              {
+                title: "Altijd iemand aan de lijn",
+                text: "Pech houdt zich niet aan kantoortijden. U bereikt ons dag en nacht, ook in het weekend, via telefoon en WhatsApp.",
+              },
+              {
+                title: "Duidelijke prijzen",
+                text: "U hoort vooraf wat het kost. Geen abonnement, geen verrassingen achteraf op de factuur.",
+              },
+              {
+                title: "Alles onder één dak",
+                text: "Is de auto na de pech niet meer de moeite waard? Dan kunnen we u meteen een bod doen. Eén partij, één afspraak.",
+              },
+            ].map((item) => (
+              <div key={item.title} className="border-l-2 border-orange-600 pl-5">
+                <h3 className="text-lg font-semibold">{item.title}</h3>
+                <p className="mt-2 leading-relaxed text-stone-600">{item.text}</p>
+              </div>
+            ))}
           </div>
         </div>
-      </footer>
+      </section>
 
-      {/* WhatsApp Widget */}
-      <a
-        href="https://wa.me/31612345948?text=Ik%20heb%20een%20vraagje%20over%20directautohulp"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 group"
-      >
-        <div className="flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white rounded-full px-4 py-3 shadow-lg hover:shadow-xl transition-all duration-300">
-          <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
-          </svg>
-          <span className="font-semibold text-sm">WhatsApp</span>
+      {/* Contact */}
+      <section id="contact" className="bg-stone-900 py-20 text-white sm:py-24">
+        <div className="mx-auto grid max-w-6xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-center">
+          <div>
+            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">Hulp nodig? Neem direct contact op.</h2>
+            <p className="mt-4 text-lg text-stone-300">
+              Via WhatsApp krijgt u het snelst antwoord. Liever bellen kan natuurlijk ook.
+            </p>
+            <div className="mt-8">
+              <ContactButtons dark />
+            </div>
+          </div>
+          <dl className="grid gap-6 text-sm sm:grid-cols-2">
+            <div>
+              <dt className="text-stone-400">Telefoon</dt>
+              <dd className="mt-1 text-base font-medium"><a href={PHONE_TEL} className="hover:text-orange-400">{PHONE_DISPLAY}</a></dd>
+            </div>
+            <div>
+              <dt className="text-stone-400">E-mail</dt>
+              <dd className="mt-1 text-base font-medium"><a href={`mailto:${EMAIL}`} className="hover:text-orange-400">{EMAIL}</a></dd>
+            </div>
+            <div>
+              <dt className="text-stone-400">Adres</dt>
+              <dd className="mt-1 text-base font-medium">
+                <a href={MAPS_URL} target="_blank" rel="noopener noreferrer" className="hover:text-orange-400">{ADDRESS}</a>
+              </dd>
+            </div>
+            <div>
+              <dt className="text-stone-400">Openingstijden</dt>
+              <dd className="mt-1 text-base font-medium">24 uur per dag, 7 dagen per week</dd>
+            </div>
+          </dl>
         </div>
-      </a>
+      </section>
+
+      <SiteFooter />
+      <WhatsAppFloat />
     </div>
   );
 }
